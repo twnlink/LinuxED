@@ -4,7 +4,7 @@ import pwd
 from shutil import copyfile
 dirpath = os.path.dirname(os.path.realpath(__file__))
 pathtoindexjs = (f'/home/{pwd.getpwuid(os.getuid()).pw_name}/.config/discord/0.0.5/modules/discord_desktop_core/index.js')
-menu = input("Welcome to the LinuxED installer!\n---\n1. Install\n2. Uninstall\n>")
+menu = input("Welcome to the LinuxED installer!\n---\n1. Install\n2. Uninstall\n3. Update ED\n>")
 if menu == "2":
     if os.path.exists(pathtoindexjs + ".backup"):
         os.remove(pathtoindexjs)
@@ -14,7 +14,7 @@ if menu == "2":
         print("Successfully uninstalled EnhancedDiscord!")
     else:
         print("Couldn't find index.js backup, did you use the installer to install ED?")
-	print("Exiting...")
+        print("Exiting...")
 elif menu == "1":
     if os.path.exists(dirpath + "/EnhancedDiscord"):
         print("EnhancedDiscord directory already exists! Skipping...")
@@ -88,3 +88,7 @@ elif menu == "1":
     else:
         print("Index.js not found. This could be because the script is not up to date, or your path was incorrect.")
     print("Exiting...")
+elif menu == "3":
+    print("Updating EnhancedDiscord installation...")
+    os.system("git -C EnhancedDiscord pull")
+    print("EnhancedDiscord successfully updated!")
