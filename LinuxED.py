@@ -4,14 +4,17 @@ import pwd
 from shutil import copyfile
 dirpath = os.path.dirname(os.path.realpath(__file__))
 pathtoindexjs = (f'/home/{pwd.getpwuid(os.getuid()).pw_name}/.config/discord/0.0.5/modules/discord_desktop_core/index.js')
-menu = input("Welcome to the EnhancedDiscord Linux installer!\n---\n1. Install\n2. Uninstall\n>")
+menu = input("Welcome to the LinuxED installer!\n---\n1. Install\n2. Uninstall\n>")
 if menu == "2":
     if os.path.exists(pathtoindexjs + ".backup"):
         os.remove(pathtoindexjs)
         print("Removed modified index.js...")
-        os.rename(pathtoindexjs + ".backup", "pathtoindexjs")
+        os.rename(pathtoindexjs + ".backup", pathtoindexjs)
         print("Renamed index.js backup...")
         print("Successfully uninstalled EnhancedDiscord!")
+    else:
+        print("Couldn't find index.js backup, did you use the installer to install ED?")
+	print("Exiting...")
 elif menu == "1":
     if os.path.exists(dirpath + "/EnhancedDiscord"):
         print("EnhancedDiscord directory already exists! Skipping...")
@@ -21,8 +24,8 @@ elif menu == "1":
     if pathyorn.upper() == "YES" or pathyorn.upper() == "Y":
         pathtoindexjs = input("What is the path to your index.js file?\n>")
     if os.path.exists(pathtoindexjs):
-        if os.path.exists(os.path.exists(pathtoindexjs + ".backup")):
-                print("Index.js backup already exists, skipping!")
+        if os.path.exists(pathtoindexjs + ".backup"):
+            print("Index.js backup already exists, skipping!")
         else:
             copyfile(pathtoindexjs, pathtoindexjs + ".backup")
         openindex = open(pathtoindexjs,"w")
