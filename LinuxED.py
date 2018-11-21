@@ -4,7 +4,7 @@ import pwd
 from shutil import copyfile
 dirpath = os.path.dirname(os.path.realpath(__file__))
 pathtoindexjs = (f'/home/{pwd.getpwuid(os.getuid()).pw_name}/.config/discord/0.0.5/modules/discord_desktop_core/index.js')
-menu = input("Welcome to the LinuxED installer!\n---\n1. Install\n2. Uninstall\n3. Update ED\n>")
+menu = input("Welcome to LinuxED!\n---\n1. Install ED\n2. Uninstall ED\n3. Update ED\n4. Update LinuxED\n5. Exit\n>")
 if menu == "2":
     if os.path.exists(pathtoindexjs + ".backup"):
         os.remove(pathtoindexjs)
@@ -91,4 +91,13 @@ elif menu == "1":
 elif menu == "3":
     print("Updating EnhancedDiscord installation...")
     os.system("git -C EnhancedDiscord pull")
-    print("EnhancedDiscord successfully updated!")
+elif menu == "4":
+	if os.path.exists(dirpath + "/LinuxED"):
+		print("Updating LinuxED installation...")
+		os.system("git -C LinuxED pull")
+	else:
+		print("Can't find LinuxED folder, did you clone the LinuxED repository?")
+		print("Exiting...")
+elif menu == "5":
+	print("Exiting...")
+	exit()
