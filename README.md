@@ -9,3 +9,5 @@ To install git on Solus, do `sudo eopkg install git`
 Installation is simple, just open a terminal in your desired LinuxED directory, and do `git clone https://github.com/Cr3atable/LinuxED/` then CD into that directory by doing `cd LinuxED` to get to the LinuxED files.
 # Usage
 Simply go into your LinuxED directory (`cd LinuxED`) and do `python3 LinuxED.py` to start it up. Then follow all prompts.
+
+# UPDATER TESTING REEE
