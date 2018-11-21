@@ -1,5 +1,5 @@
 # LinuxED
-Installer for EnhancedDiscord that works on Linux. The one provided by EnhancedDiscord does not work on Linux, and I was bored when making this. This project is not affiliated with Discord, or EnhancedDiscord in any way. I made this out of boredom and to see how good of something I could make in Python, so please note that I am still learning and that this is poorly coded.
+Installer for EnhancedDiscord that works on Linux. The one provided by EnhancedDiscord does not work on Linux, and I was bored when making this. This project is not affiliated with Discord, or EnhancedDiscord in any way. I made this out of boredom and to see how good of something I could make in Python, so please note that I am still learning and that this is poorly coded, and I'm aware of how messy, inconsistent, and idiotic this script looks.
 # Requirements
 This only requires git and python3.  
 To install git on Debian or any Debian derivatives (Ubuntu, Linux Mint) do `sudo apt install git`  
