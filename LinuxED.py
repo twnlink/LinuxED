@@ -94,7 +94,7 @@ elif menu == "3":
 elif menu == "4":
 	if os.path.exists(dirpath + "/LinuxED"):
 		print("Updating LinuxED installation...")
-		os.system("git -C LinuxED pull")
+		os.system("git pull")
 	else:
 		print("Can't find LinuxED folder, did you clone the LinuxED repository?")
 		print("Exiting...")
