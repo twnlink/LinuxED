@@ -20,7 +20,7 @@ elif menu == "1":
         print("EnhancedDiscord directory already exists! Skipping...")
     else:
         os.system("git clone https://github.com/joe27g/EnhancedDiscord.git")
-    pathyorn = input("Would you like to choose your Discord index.js file location? (Y or N)\n>")
+    pathyorn = input("Would you like to choose your Discord index.js file location? (Y/N)\n>")
     if pathyorn.upper() == "YES" or pathyorn.upper() == "Y":
         pathtoindexjs = input("What is the path to your index.js file?\n>")
     if os.path.exists(pathtoindexjs):
