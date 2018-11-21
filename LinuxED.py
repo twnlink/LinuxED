@@ -92,7 +92,7 @@ elif menu == "3":
     print("Updating EnhancedDiscord installation...")
     os.system("git -C EnhancedDiscord pull")
 elif menu == "4":
-	if os.path.exists(dirpath + "/LinuxED"):
+	if os.path.exists(dirpath + "/.git"):
 		print("Updating LinuxED installation...")
 		os.system("git pull")
 	else:
