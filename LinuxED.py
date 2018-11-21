@@ -3,6 +3,7 @@ import os
 import pwd
 from shutil import copyfile
 dirpath = os.path.dirname(os.path.realpath(__file__))
+print(dirpath)
 pathtoindexjs = (f'/home/{pwd.getpwuid(os.getuid()).pw_name}/.config/discord/0.0.5/modules/discord_desktop_core/index.js')
 menu = input("Welcome to LinuxED!\n---\n1. Install ED\n2. Uninstall ED\n3. Update ED\n4. Update LinuxED\n5. Exit\n>")
 if menu == "2":
@@ -90,10 +91,14 @@ elif menu == "1":
     print("Exiting...")
 elif menu == "3":
     print("Updating EnhancedDiscord installation...")
+    os.system("git -C EnhancedDiscord add --all")
+    os.system("git -C EnhancedDiscord commit -m \\\"fixforinjdir")
     os.system("git -C EnhancedDiscord pull --no-edit")
 elif menu == "4":
 	if os.path.exists(dirpath + "/.git"):
 		print("Updating LinuxED installation...")
+		os.system("git add --all")
+		os.system("git commit -m \\\"fixfordebuggingandupdates")
 		os.system("git pull --no-edit")
 	else:
 		print("Can't find LinuxED folder, did you clone the LinuxED repository?")
