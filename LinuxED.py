@@ -90,11 +90,11 @@ elif menu == "1":
     print("Exiting...")
 elif menu == "3":
     print("Updating EnhancedDiscord installation...")
-    os.system("git -C EnhancedDiscord pull")
+    os.system("git -C EnhancedDiscord --no-edit pull")
 elif menu == "4":
 	if os.path.exists(dirpath + "/.git"):
 		print("Updating LinuxED installation...")
-		os.system("git pull")
+		os.system("git pull --no-edit")
 	else:
 		print("Can't find LinuxED folder, did you clone the LinuxED repository?")
 		print("Exiting...")
