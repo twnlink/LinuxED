@@ -99,7 +99,7 @@ elif menu == "3":
 elif menu == "4":
     if os.path.exists(dirpath + "/.git"):
         print("Updating LinuxED installation...")
-        os.system("git -C EnhancedDiscord pull --no-edit")
+        os.system("git pull --no-edit")
         os.system("git rebase")
     else:
         print("Can't find LinuxED folder, did you clone the LinuxED repository?")
