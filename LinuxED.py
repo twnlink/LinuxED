@@ -1,5 +1,4 @@
 #the shittiest thing ever (BUT IT STILL WORKS SO IT'S OKAY)
-#commit to test updates
 import os
 import pwd
 from shutil import copyfile
@@ -74,10 +73,13 @@ elif menu == "1":
         originalfirstline = opendomshit.readlines()
         originalfirstline.insert(0, injdir + "\n")
         opendomshit.close()
-
         opendomshit = open(f"{dirpath}/EnhancedDiscord/dom_shit.js","w")
         opendomshit.writelines(originalfirstline)
         opendomshit.close()
+        os.system("git -C EnhancedDiscord add dom_shit.js")
+        os.system("git -C EnhancedDiscord add bd_shit.js")
+        os.system("git -C EnhancedDiscord add plugins/ed_settings.js")
+        os.system("git -C EnhancedDiscord commit -m \\\"fixfordomshitandbd")
         print("Patched dom shit...")
         if os.path.exists(dirpath + "/EnhancedDiscord/config.json"):
             print("Config already exists, skipping...")
@@ -92,18 +94,14 @@ elif menu == "1":
     print("Exiting...")
 elif menu == "3":
     print("Updating EnhancedDiscord installation...")
-    os.system("git -C EnhancedDiscord add --all")
-    os.system("git -C EnhancedDiscord commit -m \\\"fixforinjdir")
-    os.system("git -C EnhancedDiscord pull --no-edit")
+    os.system("git -C EnhancedDiscord rebase")
 elif menu == "4":
-	if os.path.exists(dirpath + "/.git"):
-		print("Updating LinuxED installation...")
-		os.system("git add --all")
-		os.system("git commit -m \\\"fixfordebuggingandupdates")
-		os.system("git pull --no-edit")
-	else:
-		print("Can't find LinuxED folder, did you clone the LinuxED repository?")
-		print("Exiting...")
+    if os.path.exists(dirpath + "/.git"):
+        print("Updating LinuxED installation...")
+        os.system("git rebase")
+    else:
+        print("Can't find LinuxED folder, did you clone the LinuxED repository?")
+        print("Exiting...")
 elif menu == "5":
-	print("Exiting...")
-	exit()
+    print("Exiting...")
+    exit()
