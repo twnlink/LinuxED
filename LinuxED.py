@@ -77,9 +77,8 @@ elif menu == "1":
         opendomshit.writelines(originalfirstline)
         opendomshit.close()
         os.system("git -C EnhancedDiscord add dom_shit.js")
-        os.system("git -C EnhancedDiscord add bd_shit.js")
         os.system("git -C EnhancedDiscord add plugins/ed_settings.js")
-        os.system("git -C EnhancedDiscord commit -m \\\"fixfordomshitandbd")
+        os.system("git -C EnhancedDiscord commit -m \\\"Update")
         print("Patched dom shit...")
         if os.path.exists(dirpath + "/EnhancedDiscord/config.json"):
             print("Config already exists, skipping...")
@@ -94,6 +93,10 @@ elif menu == "1":
     print("Exiting...")
 elif menu == "3":
     print("Updating EnhancedDiscord installation...")
+    if os.path.exists(dirpath + "/EnhancedDiscord/bd_shit.js"):
+        print("BD integration detected, adding BD files to update...")
+        os.system("git -C EnhancedDiscord add bd_shit.js")
+        os.system("git -C EnhancedDiscord commit -m \\\"BDSHIT")
     os.system("git -C EnhancedDiscord rebase")
 elif menu == "4":
     if os.path.exists(dirpath + "/.git"):
