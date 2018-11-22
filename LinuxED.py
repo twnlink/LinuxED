@@ -1,4 +1,4 @@
-#the shittiest thing ever (BUT IT STILL WORKS SO IT'S OKAY) TEST REBASE
+#the shittiest thing ever (BUT IT STILL WORKS SO IT'S OKAY)
 import os
 import pwd
 from shutil import copyfile
@@ -95,10 +95,12 @@ elif menu == "3":
     os.system("git -C EnhancedDiscord add --all")
     os.system("git -C EnhancedDiscord commit -m Update")
     os.system("git -C EnhancedDiscord rebase")
+    os.system("git -C EnhancedDiscord pull --no-edit")
 elif menu == "4":
     if os.path.exists(dirpath + "/.git"):
         print("Updating LinuxED installation...")
         os.system("git rebase")
+        os.system("git -C EnhancedDiscord pull --no-edit")
     else:
         print("Can't find LinuxED folder, did you clone the LinuxED repository?")
         print("Exiting...")
