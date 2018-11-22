@@ -1,4 +1,4 @@
-#the shittiest thing ever (BUT IT STILL WORKS SO IT'S OKAY) (TESTING UPDATE MECHANISM wOW)
+#the shittiest thing ever (BUT IT STILL WORKS SO IT'S OKAY)
 import os
 import pwd
 from shutil import copyfile
@@ -94,13 +94,13 @@ elif menu == "3":
     print("Updating EnhancedDiscord installation...")
     os.system("git -C EnhancedDiscord add --all")
     os.system("git -C EnhancedDiscord commit -m Update")
-    os.system("git -C EnhancedDiscord rebase")
     os.system("git -C EnhancedDiscord pull --no-edit")
+    os.system("git -C EnhancedDiscord rebase")
 elif menu == "4":
     if os.path.exists(dirpath + "/.git"):
         print("Updating LinuxED installation...")
-        os.system("git rebase")
         os.system("git -C EnhancedDiscord pull --no-edit")
+        os.system("git rebase")
     else:
         print("Can't find LinuxED folder, did you clone the LinuxED repository?")
         print("Exiting...")
