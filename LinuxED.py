@@ -106,4 +106,4 @@ elif menu == "4":
         print("Exiting...")
 elif menu == "5":
     print("Exiting...")
-    exit()
+    exit() #last 2 update tests hopefully
