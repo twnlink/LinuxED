@@ -1,4 +1,4 @@
-#the shittiest thing ever (BUT IT STILL WORKS SO IT'S OKAY) TESTING UPDATES PLEASE FUCKING WORK ONE MORE TRY COME ON
+#The worst project you will ever see. Please grab eye bleach to prepare yourself for this mess of inconsistent, buggy, useless code that I made for my eyes and my eyes only.
 import os
 import pwd
 from shutil import copyfile
