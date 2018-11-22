@@ -77,7 +77,7 @@ elif menu == "1":
         opendomshit.writelines(originalfirstline)
         opendomshit.close()
         os.system("git -C EnhancedDiscord add --all")
-        os.system("git -C EnhancedDiscord commit -m \\\"Update")
+        os.system("git -C EnhancedDiscord commit -m Update")
         print("Patched dom shit...")
         if os.path.exists(dirpath + "/EnhancedDiscord/config.json"):
             print("Config already exists, skipping...")
@@ -93,7 +93,7 @@ elif menu == "1":
 elif menu == "3":
     print("Updating EnhancedDiscord installation...")
     os.system("git -C EnhancedDiscord add --all")
-    os.system("git -C EnhancedDiscord commit -m \\\"Update")
+    os.system("git -C EnhancedDiscord commit -m Update")
     os.system("git -C EnhancedDiscord rebase")
 elif menu == "4":
     if os.path.exists(dirpath + "/.git"):
