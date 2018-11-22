@@ -1,4 +1,4 @@
-#the shittiest thing ever (BUT IT STILL WORKS SO IT'S OKAY) TESTING UPDATES PLEASE FUCKING WORK
+#the shittiest thing ever (BUT IT STILL WORKS SO IT'S OKAY) TESTING UPDATES PLEASE FUCKING WORK ONE MORE TRY
 import os
 import pwd
 from shutil import copyfile
