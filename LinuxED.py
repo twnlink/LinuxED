@@ -1,5 +1,4 @@
 #The worst project you will ever see. Please grab eye bleach to prepare yourself for this mess of inconsistent, buggy, useless code that I made for my eyes and my eyes only.
-#FINAL UPDATE TEST
 import os
 import pwd
 from shutil import copyfile
@@ -107,4 +106,4 @@ elif menu == "4":
         print("Exiting...")
 elif menu == "5":
     print("Exiting...")
-    exit() #last 2 update tests hopefully
+    exit() 
