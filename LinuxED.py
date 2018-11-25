@@ -91,16 +91,11 @@ elif menu == "1":
         print("Index.js not found. This could be because the script is not up to date, or your path was incorrect.")
     print("Exiting...")
 elif menu == "3":
-    print("Updating EnhancedDiscord installation...")
-    os.system("git -C EnhancedDiscord add --all")
-    os.system("git -C EnhancedDiscord commit -m Update")
-    os.system("git -C EnhancedDiscord pull --no-edit")
-    os.system("git -C EnhancedDiscord rebase")
+    print("Feature not implemented yet! Sorry...")
 elif menu == "4":
     if os.path.exists(dirpath + "/.git"):
         print("Updating LinuxED installation...")
         os.system("git pull --no-edit")
-        os.system("git rebase")
     else:
         print("Can't find LinuxED folder, did you clone the LinuxED repository?")
         print("Exiting...")
