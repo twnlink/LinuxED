@@ -2,6 +2,10 @@
 import os
 import pwd
 from shutil import copyfile
+import platform
+if platform.system() == "Windows":
+    print("This is a Linux installer for EnhancedDiscord... It says it in the name, LinuxED... Why are you using this?")
+    exit()
 dirpath = os.path.dirname(os.path.realpath(__file__))
 print(dirpath)
 pathtoindexjs = (f'/home/{pwd.getpwuid(os.getuid()).pw_name}/.config/discord/0.0.5/modules/discord_desktop_core/index.js')
