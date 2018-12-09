@@ -80,8 +80,6 @@ elif menu == "1":
         opendomshit = open(f"{dirpath}/EnhancedDiscord/dom_shit.js","w")
         opendomshit.writelines(originalfirstline)
         opendomshit.close()
-        os.system("git -C EnhancedDiscord add --all")
-        os.system("git -C EnhancedDiscord commit -m Update")
         print("Patched dom shit...")
         if os.path.exists(dirpath + "/EnhancedDiscord/config.json"):
             print("Config already exists, skipping...")
