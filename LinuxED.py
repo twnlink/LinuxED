@@ -3,6 +3,12 @@ import os
 import pwd
 from shutil import copyfile
 import platform
+
+discordstableversion = "0.0.5"
+discordcanaryversion = "0.0.63"
+discordptbversion = "0.0.9"
+discordsnapversion = "0.0.5"
+discordmenu = ""
 #Check if some idiot is running this on Windows... Like, seriously... Why the hell would you run LinuxED on Windows???
 if platform.system() == "Windows":
     print("This is a Linux installer for EnhancedDiscord... It says it in the name, LinuxED... Why are you using this?")
@@ -12,14 +18,39 @@ if platform.system() == "Windows":
 dirpath = os.path.dirname(os.path.realpath(__file__))
 #Username is the actual username of the person running the script
 username = pwd.getpwuid(os.getuid()).pw_name
-#Discordversion is my sloppy way of handling Discord updates since I have no way of detecting each Discord version.
-discordversion = "0.0.5"
-#long and boring thing that uses variables to get the discord index.js path
-pathtoindexjs = (f'/home/{username}/.config/discord/{discordversion}/modules/discord_desktop_core/index.js')
 #the menu. that's it. what exactly do you want from me?
 menu = input("Welcome to LinuxED!\n---\n1. Install ED\n2. Uninstall ED\n3. Update ED\n4. Update LinuxED\n5. Exit\n>")
 if menu == "2":
-    #checking for backup file created by the script from a previous install. if it exists you can restore it to get a clean install.
+    #start long chain of figuring out what versions of discord exist
+    if os.path.exists(f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js'):
+        discordmenu = discordmenu + "Stable\n"
+    if os.path.exists(f'/home/{username}/.config/discordcanary/{discordcanaryversion}/modules/discord_desktop_core/index.js'):
+        discordmenu = discordmenu + "Canary\n"
+    if os.path.exists(f'/home/{username}/.config/discordptb/{discordptbversion}/modules/discord_desktop_core/index.js'):
+        discordmenu = discordmenu + "PTB\n"
+    if os.path.exists(f'/home/{username}/snap/discord/82/.config/discord/{discordsnapversion}/modules/discord_desktop_core/index.js'):
+        discordmenu = discordmenu + "Snap\n"
+    if discordmenu == "Stable\n":
+        pathtoindexjs = (f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js')
+    elif discordmenu == "":
+        nodiscordmenu = input("You don't seem to have Discord installed, or your version is unsupported by the installer...\n Would you like to enter a custom index.js path? (y/N)\n>")
+        if nodiscordmenu.upper() == "YES" or nodiscordmenu.upper() == "Y":
+            pathtoindexjs = input("Please type the path to your index.js...\n>")
+        else:
+            print("Sorry that the installer wasn't able to help.\nExiting...")
+            exit()
+    else:
+        selectionmenu = input("These are all installed versions of Discord you have: \n" + discordmenu + "Custom\nPlease type the name of the one you want to uninstall EnhancedDiscord from.\n\n>")
+        if selectionmenu.upper() == "STABLE":
+            pathtoindexjs = (f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js')
+        if selectionmenu.upper() == "CANARY":
+            pathtoindexjs = (f'/home/{username}/.config/discordcanary/{discordcanaryversion}/modules/discord_desktop_core/index.js')
+        if selectionmenu.upper() == "PTB":
+            pathtoindexjs = (f'/home/{username}/.config/discordptb/{discordptbversion}/modules/discord_desktop_core/index.js')
+        if selectionmenu.upper() == "SNAP":
+            pathtoindexjs == (f'/home/{username}/snap/discord/82/.config/discord/{discordsnapversion}/modules/discord_desktop_core/index.js')
+        if selectionmenu.upper() == "CUSTOM":
+            pathtoindexjs = input("Please type the path to your index.js...\n>")
     if os.path.exists(pathtoindexjs + ".backup"):
         #delete modified indexjs so that we can replace it with the unmodified one
         os.remove(pathtoindexjs)
@@ -39,12 +70,36 @@ elif menu == "1":
     else:
         #clone the enhanceddiscord repo
         os.system("git clone https://github.com/joe27g/EnhancedDiscord.git")
-        #ask user if they'd like to specify an index.js file location in case my default location isn't the correct area
-    pathyorn = input("Would you like to choose your Discord index.js file location? (y/N)\n>")
-    #case insensitive check if user responds with yes
-    if pathyorn.upper() == "YES" or pathyorn.upper() == "Y":
-        #set predefined pathtoindexjs var to user defined one
-        pathtoindexjs = input("What is the path to your index.js file?\n>")
+    #start long chain of figuring out what versions of discord exist
+    if os.path.exists(f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js'):
+        discordmenu = discordmenu + "Stable\n"
+    if os.path.exists(f'/home/{username}/.config/discordcanary/{discordcanaryversion}/modules/discord_desktop_core/index.js'):
+        discordmenu = discordmenu + "Canary\n"
+    if os.path.exists(f'/home/{username}/.config/discordptb/{discordptbversion}/modules/discord_desktop_core/index.js'):
+        discordmenu = discordmenu + "PTB\n"
+    if os.path.exists(f'/home/{username}/snap/discord/82/.config/discord/{discordsnapversion}/modules/discord_desktop_core/index.js'):
+        discordmenu = discordmenu + "Snap\n"
+    if discordmenu == "Stable\n":
+        pathtoindexjs = (f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js')
+    elif discordmenu == "":
+        nodiscordmenu = input("You don't seem to have Discord installed, or your version is unsupported by the installer...\n Would you like to enter a custom index.js path? (y/N)\n>")
+        if nodiscordmenu.upper() == "YES" or nodiscordmenu.upper() == "Y":
+            pathtoindexjs = input("Please type the path to your index.js...\n>")
+        else:
+            print("Sorry that the installer wasn't able to help.\nExiting...")
+            exit()
+    else:
+        selectionmenu = input("These are all installed versions of Discord you have: \n" + discordmenu + "Custom\nPlease type the name of the one you want to install EnhancedDiscord to.\n\n>")
+        if selectionmenu.upper() == "STABLE":
+            pathtoindexjs = (f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js')
+        if selectionmenu.upper() == "CANARY":
+            pathtoindexjs = (f'/home/{username}/.config/discordcanary/{discordcanaryversion}/modules/discord_desktop_core/index.js')
+        if selectionmenu.upper() == "PTB":
+            pathtoindexjs = (f'/home/{username}/.config/discordptb/{discordptbversion}/modules/discord_desktop_core/index.js')
+        if selectionmenu.upper() == "SNAP":
+            pathtoindexjs == (f'/home/{username}/snap/discord/82/.config/discord/{discordsnapversion}/modules/discord_desktop_core/index.js')
+        if selectionmenu.upper() == "CUSTOM":
+            pathtoindexjs = input("Please type the path to your index.js...\n>")
     #check to see if indexjs path exists, if not exit
     if os.path.exists(pathtoindexjs):
         #check if backup exists so you don't end up remaking it
