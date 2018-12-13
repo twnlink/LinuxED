@@ -3,6 +3,10 @@ import os
 import pwd
 from shutil import copyfile
 import platform
+#Check if some idiot is running this on Windows... Like, seriously... Why the hell would you run LinuxED on Windows???
+if platform.system() == "Windows":
+    print("This is a Linux installer for EnhancedDiscord... It says it in the name, LinuxED... Why are you using this?")
+    exit()
 discordstableversion = "0.0.5"
 discordcanaryversion = "0.0.63"
 discordptbversion = "0.0.9"
@@ -46,10 +50,6 @@ def indexjsselect(toornottoinstall, toorfrom):
     else:
         print("---\nCan't find index.js. Are you sure that exists?\nExiting...\n---")
         exit()
-#Check if some idiot is running this on Windows... Like, seriously... Why the hell would you run LinuxED on Windows???
-if platform.system() == "Windows":
-    print("This is a Linux installer for EnhancedDiscord... It says it in the name, LinuxED... Why are you using this?")
-    exit()
 #Define the starting variables, these are all their own thing. 
 #Dirpath is the current directory the script is running from
 dirpath = os.path.dirname(os.path.realpath(__file__))
