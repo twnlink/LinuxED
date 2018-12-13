@@ -3,10 +3,6 @@ import os
 import pwd
 from shutil import copyfile
 import platform
-#Check if some idiot is running this on Windows... Like, seriously... Why the hell would you run LinuxED on Windows???
-if platform.system() == "Windows":
-    print("This is a Linux installer for EnhancedDiscord... It says it in the name, LinuxED... Why are you using this?")
-    exit()
 discordstableversion = "0.0.5"
 discordcanaryversion = "0.0.63"
 discordptbversion = "0.0.9"
@@ -46,10 +42,14 @@ def indexjsselect(toornottoinstall, toorfrom):
         if selectionmenu.upper() == "CUSTOM":
             pathtoindexjs = input("Please type the path to your index.js...\n>")
     if os.path.exists(pathtoindexjs):
-        print("Index.js found!")
+        print("---\nIndex.js found!")
     else:
         print("---\nCan't find index.js. Are you sure that exists?\nExiting...\n---")
         exit()
+#Check if some idiot is running this on Windows... Like, seriously... Why the hell would you run LinuxED on Windows???
+if platform.system() == "Windows":
+    print("This is a Linux installer for EnhancedDiscord... It says it in the name, LinuxED... Why are you using this?")
+    exit()
 #Define the starting variables, these are all their own thing. 
 #Dirpath is the current directory the script is running from
 dirpath = os.path.dirname(os.path.realpath(__file__))
@@ -66,7 +66,7 @@ if menu == "2":
         #make unmodified one have the proper name
         os.rename(pathtoindexjs + ".backup", pathtoindexjs)
         print("Renamed index.js backup...")
-        print("Successfully uninstalled EnhancedDiscord\n---!")
+        print("Successfully uninstalled EnhancedDiscord!\n---")
     else:
         #if the backup isn't there inform the user and then exit
         print("---\nCouldn't find index.js backup, did you use the installer to install ED?")
@@ -150,7 +150,7 @@ elif menu == "1":
         makeconfigfile.write("{}")
         makeconfigfile.close()
         print("Config file successfully made!")
-    print("EnhancedDiscord installation complete!")
+    print("EnhancedDiscord installation complete!\n---")
 #placeholder for updating ED, but I don't think I'll actually ever do that
 elif menu == "3":
     print("Feature not implemented yet! Sorry...")
