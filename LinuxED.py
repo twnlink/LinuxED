@@ -1,11 +1,14 @@
 #Import all of the shit. Yes, I know this code is terrible and unreadable. No, I won't rewrite it.
 import os
-import pwd
+try:
+    import pwd
+except:
+    print("Looks like I couldn't import pwd. Are you sure you're on Linux? You might be on Windows.")
+    exit()
 from shutil import copyfile
-import platform
 discordstableversion = "0.0.5"
-discordcanaryversion = "0.0.63"
-discordptbversion = "0.0.9"
+discordcanaryversion = "0.0.65"
+discordptbversion = "0.0.10"
 discordsnapversion = "0.0.5"
 discordmenu = ""
 def indexjsselect(toornottoinstall, toorfrom):
@@ -23,7 +26,7 @@ def indexjsselect(toornottoinstall, toorfrom):
     if discordmenu == "Stable\n":
         pathtoindexjs = (f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js')
     elif discordmenu == "":
-        nodiscordmenu = input("You don't seem to have Discord installed, or your version is unsupported by the installer...\n Would you like to enter a custom index.js path? (y/N)\n>")
+        nodiscordmenu = input("You don't seem to have Discord installed, or your version is unsupported by the installer...\nWould you like to enter a custom index.js path? (y/N)\n>")
         if nodiscordmenu.upper() == "YES" or nodiscordmenu.upper() == "Y":
             pathtoindexjs = input("Please type the path to your index.js...\n>")
         else:
@@ -46,10 +49,6 @@ def indexjsselect(toornottoinstall, toorfrom):
     else:
         print("---\nCan't find index.js. Are you sure that exists?\nExiting...\n---")
         exit()
-#Check if some idiot is running this on Windows... Like, seriously... Why the hell would you run LinuxED on Windows???
-if platform.system() == "Windows":
-    print("This is a Linux installer for EnhancedDiscord... It says it in the name, LinuxED... Why are you using this?")
-    exit()
 #Define the starting variables, these are all their own thing. 
 #Dirpath is the current directory the script is running from
 dirpath = os.path.dirname(os.path.realpath(__file__))
@@ -77,7 +76,11 @@ elif menu == "1":
         print("EnhancedDiscord directory already exists! Skipping...")
     else:
         #clone the enhanceddiscord repo
-        os.system("git clone https://github.com/joe27g/EnhancedDiscord.git")
+        bdpluginsorno = input("Would you like to have BetterDiscord plugin support in EnhancedDiscord? (y/N)\n>")
+        if bdpluginsorno.upper() == "Y" or bdpluginsorno.upper() == "YES":
+            os.system("git clone https://github.com/rauenzi/EnhancedDiscord -b bd-plugins")
+        else:
+            os.system("git clone https://github.com/rauenzi/EnhancedDiscord")
     #start long chain of figuring out what versions of discord exist
     indexjsselect("install", "to")
     #check to see if indexjs path exists, if not exit
