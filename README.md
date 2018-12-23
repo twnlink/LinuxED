@@ -2,7 +2,11 @@
 Installer for EnhancedDiscord that works on Linux. The one provided by EnhancedDiscord does not work on Linux, and I was bored when making this. This project is not affiliated with Discord, or EnhancedDiscord in any way. I made this out of boredom and to see how good of something I could make in Python, so please note that I am still learning and that this is poorly coded, and I'm aware of how messy, inconsistent, and idiotic this script looks.
 # Versions of Discord supported
 LinuxED supports:
-Discord stable, Flatpak Discord, Snap Discord, Discord Canary, and Discord PTB.
+- Discord stable
+- Flatpak Discord
+- Snap Discord
+- Discord Canary
+- Discord PTB.
 # Features
 - Custom index.js location
 - LinuxED updater (this does not update ED, it updates the LinuxED script)
