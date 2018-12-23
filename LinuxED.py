@@ -10,6 +10,7 @@ discordstableversion = "0.0.5"
 discordcanaryversion = "0.0.65"
 discordptbversion = "0.0.10"
 discordsnapversion = "0.0.5"
+discordflatversion = "0.0.5"
 discordmenu = ""
 def indexjsselect(toornottoinstall, toorfrom):
     global pathtoindexjs
@@ -23,6 +24,8 @@ def indexjsselect(toornottoinstall, toorfrom):
         discordmenu = discordmenu + "PTB\n"
     if os.path.exists(f'/home/{username}/snap/discord/82/.config/discord/{discordsnapversion}/modules/discord_desktop_core/index.js'):
         discordmenu = discordmenu + "Snap\n"
+    if os.path.exists(f'/home/{username}/.var/app/com.discordapp.Discord/config/discord/{discordflatversion}/modules/discord_desktop_core/index.js'):
+        discordmenu = discordmenu + "Flatpak\n"
     if discordmenu == "Stable\n":
         pathtoindexjs = (f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js')
     elif discordmenu == "":
@@ -41,7 +44,9 @@ def indexjsselect(toornottoinstall, toorfrom):
         if selectionmenu.upper() == "PTB":
             pathtoindexjs = (f'/home/{username}/.config/discordptb/{discordptbversion}/modules/discord_desktop_core/index.js')
         if selectionmenu.upper() == "SNAP":
-            pathtoindexjs == (f'/home/{username}/snap/discord/82/.config/discord/{discordsnapversion}/modules/discord_desktop_core/index.js')
+            pathtoindexjs = (f'/home/{username}/snap/discord/82/.config/discord/{discordsnapversion}/modules/discord_desktop_core/index.js')
+        if selectionmenu.upper() == "FLATPAK":
+            pathtoindexjs = (f'/home/{username}/.var/app/com.discordapp.Discord/config/discord/{discordflatversion}/modules/discord_desktop_core/index.js')
         if selectionmenu.upper() == "CUSTOM":
             pathtoindexjs = input("Please type the path to your index.js...\n>")
     if os.path.exists(pathtoindexjs):
