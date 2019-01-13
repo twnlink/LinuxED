@@ -1,176 +1,209 @@
-#Import all of the shit. Yes, I know this code is terrible and unreadable. No, I won't rewrite it.
+# -*- coding: utf-8 -*
+
+# written by Creatable
+
+# credits:
+# - Tcll5850: https://gitlab.com/Tcll
+#   for cleaning up the code, making it more maintainable, and extending it's functionality, as well as fixing issues with older python versions.
+
 import os
-try:
-    import pwd
-except:
-    print("Looks like I couldn't import pwd. Are you sure you're on Linux? You might be on Windows.")
-    exit()
-from shutil import copyfile
+if os.name == 'nt': print('WARNING: it appears you are running the Linux installer on Windows.\n'
+                          'If you are unaware of what you\'re doing, it\'s recommended you close this installer.\n'
+                          'Otherwise you may continue at your own risk.\n')
+# Define the starting variables, these are all their own thing.
+username = os.environ['user']
+dirpath = os.path.dirname(os.path.realpath(__file__))
+injdir = 'process.env.injDir = \'%s/EnhancedDiscord\';'%dirpath
+
+# this is not my code but it's what I put at the end of index.js
+patch = """%s
+const { BrowserWindow, session } = require('electron');
+const path = require('path');
+
+session.defaultSession.webRequest.onHeadersReceived(function(details, callback) {
+
+   if (!details.responseHeaders["content-security-policy-report-only"] && !details.responseHeaders["content-security-policy"]) return callback({cancel: false});
+   delete details.responseHeaders["content-security-policy-report-only"];
+
+   delete details.responseHeaders["content-security-policy"];
+
+   callback({cancel: false, responseHeaders: details.responseHeaders})
+;
+});
+
+class PatchedBrowserWindow extends BrowserWindow {
+   constructor(originalOptions) {
+       const options = Object.create(originalOptions);
+       options.webPreferences = Object.create(options.webPreferences);
+    
+    const originalPreloadScript = options.webPreferences.preload;
+
+       // Make sure Node integration is enabled
+       options.webPreferences.nodeIntegration = true;
+       options.webPreferences.preload = path.join(process.env.injDir, 'dom_shit.js');
+       options.webPreferences.transparency = true;
+
+       super(options);
+       this.__preload = originalPreloadScript;
+   }
+}
+
+const electron_path = require.resolve('electron');
+const browser_window_path = require.resolve(path.resolve(electron_path, '..', '..', 'browser-window.js'));
+require.cache[browser_window_path].exports = PatchedBrowserWindow;
+module.exports = require('./core.asar');"""%injdir
+
+# Tcll: should we really be using static versions??
 discordstableversion = "0.0.5"
 discordcanaryversion = "0.0.65"
 discordptbversion = "0.0.10"
 discordsnapversion = "0.0.5"
 discordflatversion = "0.0.5"
-discordmenu = ""
-def indexjsselect(toornottoinstall, toorfrom):
-    global pathtoindexjs
-    global discordmenu
-    pathtoindexjs = "invalidpath"
-    if os.path.exists(f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js'):
-        discordmenu = discordmenu + "Stable\n"
-    if os.path.exists(f'/home/{username}/.config/discordcanary/{discordcanaryversion}/modules/discord_desktop_core/index.js'):
-        discordmenu = discordmenu + "Canary\n"
-    if os.path.exists(f'/home/{username}/.config/discordptb/{discordptbversion}/modules/discord_desktop_core/index.js'):
-        discordmenu = discordmenu + "PTB\n"
-    if os.path.exists(f'/home/{username}/snap/discord/82/.config/discord/{discordsnapversion}/modules/discord_desktop_core/index.js'):
-        discordmenu = discordmenu + "Snap\n"
-    if os.path.exists(f'/home/{username}/.var/app/com.discordapp.Discord/config/discord/{discordflatversion}/modules/discord_desktop_core/index.js'):
-        discordmenu = discordmenu + "Flatpak\n"
-    if discordmenu == "Stable\n":
-        pathtoindexjs = (f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js')
-    elif discordmenu == "":
-        nodiscordmenu = input("You don't seem to have Discord installed, or your version is unsupported by the installer...\nWould you like to enter a custom index.js path? (y/N)\n>")
-        if nodiscordmenu.upper() == "YES" or nodiscordmenu.upper() == "Y":
-            pathtoindexjs = input("Please type the path to your index.js...\n>")
+
+detect_versions = lambda discordpath,idxsubpath: [
+    (discordpath+vsn+idxsubpath, vsn) for vsn in (os.listdir(discordpath) if os.path.exists(discordpath) else []) if os.path.isdir(discordpath+vsn) and len(vsn.split('.')) == 3 ]
+
+print('Welcome to the LinuxED installation script.')
+
+# TODO: detect patched clients
+baseclients = {
+    "STABLE" : detect_versions('/home/%s/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
+    "CANARY" : detect_versions('/home/%s/.config/discordcanary/'%username, '/modules/discord_desktop_core/index.js'),
+    "PTB"    : detect_versions('/home/%s/.config/discordptb/'%username, '/modules/discord_desktop_core/index.js'),
+    "SNAP"   : detect_versions('/home/%s/snap/discord/82/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
+    "FLATPAK": detect_versions('/home/%s/.var/app/com.discordapp.Discord/config/discord/'%username, '/modules/discord_desktop_core/index.js')
+}
+
+clients = [ (str(i+1),cpv) for i,cpv in enumerate( (c,p,v) for c in [ "STABLE", "CANARY", "PTB", "SNAP", "FLATPAK" ] if baseclients[c] for p,v in baseclients[c] ) ]
+clients.append( (str(len(clients)+1), ("CUSTOM",'', '')) )
+getclient = dict(clients).get
+
+def validate_custom_client():
+    while True:
+        print("\nPlease enter the location of your client's index.js file.")
+        jspath = input('> ')
+        if os.path.exists(jspath): return 'CUSTOM', jspath, '' # TODO: can we detect the version of a custom client?
+        elif not jspath:
+            print("\nOperation cancelled...")
+            return 'CUSTOM', jspath, ''
         else:
-            print("Sorry that the installer wasn't able to help.\nExiting...")
-            exit()
-    else:
-        selectionmenu = input("---\nThese are all installed versions of Discord you have: \n" + discordmenu + f"Custom\n---\nPlease type the name of the Discord version you want to {toornottoinstall} EnhancedDiscord {toorfrom}.\n>")
-        if selectionmenu.upper() == "STABLE":
-            pathtoindexjs = (f'/home/{username}/.config/discord/{discordstableversion}/modules/discord_desktop_core/index.js')
-        if selectionmenu.upper() == "CANARY":
-            pathtoindexjs = (f'/home/{username}/.config/discordcanary/{discordcanaryversion}/modules/discord_desktop_core/index.js')
-        if selectionmenu.upper() == "PTB":
-            pathtoindexjs = (f'/home/{username}/.config/discordptb/{discordptbversion}/modules/discord_desktop_core/index.js')
-        if selectionmenu.upper() == "SNAP":
-            pathtoindexjs = (f'/home/{username}/snap/discord/82/.config/discord/{discordsnapversion}/modules/discord_desktop_core/index.js')
-        if selectionmenu.upper() == "FLATPAK":
-            pathtoindexjs = (f'/home/{username}/.var/app/com.discordapp.Discord/config/discord/{discordflatversion}/modules/discord_desktop_core/index.js')
-        if selectionmenu.upper() == "CUSTOM":
-            pathtoindexjs = input("Please type the path to your index.js...\n>")
-    if os.path.exists(pathtoindexjs):
-        print("---\nIndex.js found!")
-    else:
-        print("---\nCan't find index.js. Are you sure that exists?\nExiting...\n---")
-        exit()
-#Define the starting variables, these are all their own thing. 
-#Dirpath is the current directory the script is running from
-dirpath = os.path.dirname(os.path.realpath(__file__))
-#Username is the actual username of the person running the script
-username = pwd.getpwuid(os.getuid()).pw_name
-#the menu. that's it. what exactly do you want from me?
-menu = input("Welcome to LinuxED!\n---\n1. Install ED\n2. Uninstall ED\n3. Update ED\n4. Update LinuxED\n5. Exit\n>")
-if menu == "2":
-    indexjsselect("uninstall", "from")
-    if os.path.exists(pathtoindexjs + ".backup"):
-        #delete modified indexjs so that we can replace it with the unmodified one
-        os.remove(pathtoindexjs)
-        print("---\nRemoved modified index.js...")
-        #make unmodified one have the proper name
-        os.rename(pathtoindexjs + ".backup", pathtoindexjs)
-        print("Renamed index.js backup...")
-        print("Successfully uninstalled EnhancedDiscord!\n---")
-    else:
-        #if the backup isn't there inform the user and then exit
-        print("---\nCouldn't find index.js backup, did you use the installer to install ED?")
-        print("Exiting...\n---")
-elif menu == "1":
-    #checking so you don't have to do git clone enhanceddiscord again
-    if os.path.exists(dirpath + "/EnhancedDiscord"):
-        print("EnhancedDiscord directory already exists! Skipping...")
-    else:
-        #clone the enhanceddiscord repo
-        bdpluginsorno = input("Would you like to have BetterDiscord plugin support in EnhancedDiscord? (y/N)\n>")
-        if bdpluginsorno.upper() == "Y" or bdpluginsorno.upper() == "YES":
-            os.system("git clone https://github.com/rauenzi/EnhancedDiscord -b bd-plugins")
+            print("\nError: The specified location was not valid.")
+            print("Please enter a valid location or press Enter to cancel.")
+
+def select_client(allow_custom=False):
+    if len(clients) > 2 or allow_custom:
+        while True:
+            print('\nPlease enter the number for the client you wish to patch, or press Enter to exit:')
+            result = input('%s\n> '%('\n'.join('%s. %s: %s'%(i,o,v) for i,(o,p,v) in clients)) )
+            client, jspath, version = getclient( result, (None,'','') )
+            if client:
+                client, jspath, version = validate_custom_client()
+                if jspath: return client, jspath, version
+                else: continue
+            if not result:
+                print("\nOperation cancelled...")
+                #input('Press Enter to Exit...')
+                return 'CUSTOM', jspath, ''
+            print("\nError: The specified option was not valid.")
+    
+    elif len(clients) == 1:
+        print('\nThe installer could not detect any known Discord clients.')
+        print('Do you have Discord installed in a custom location? (y/n)')
+        if input("> ").upper() in {"Y","YES"}: return validate_custom_client()
         else:
-            os.system("git clone https://github.com/rauenzi/EnhancedDiscord")
-    #start long chain of figuring out what versions of discord exist
-    indexjsselect("install", "to")
-    #check to see if indexjs path exists, if not exit
-    if os.path.exists(pathtoindexjs + ".backup"):
-        print("Index.js backup already exists, skipping!")
-    else:
-        #make backup index.js for uninstallation and recovery in case something goes wrong
-        copyfile(pathtoindexjs, pathtoindexjs + ".backup")
-    openindex = open(pathtoindexjs,"w")
-    injdir = f'process.env.injDir = \'{dirpath}/EnhancedDiscord\';'
-    #this is not my code but it's what I put at the end of index.js
-    endpart = """const { BrowserWindow, session } = require('electron');
-    const path = require('path');
+            print('\nNo Discord client could be found.')
+            print('Please install Discord and re-run this installer.')
+            #input('Press Enter to Exit...')
+            return 'CUSTOM', '', ''
+    
+    else: return getclient('1')
 
-    session.defaultSession.webRequest.onHeadersReceived(function(details, callback) {
-
-       if (!details.responseHeaders["content-security-policy-report-only"] && !details.responseHeaders["content-security-policy"]) return callback({cancel: false});
-       delete details.responseHeaders["content-security-policy-report-only"];
-
-       delete details.responseHeaders["content-security-policy"];
-
-       callback({cancel: false, responseHeaders: details.responseHeaders})
-    ;
-    });
-
-    class PatchedBrowserWindow extends BrowserWindow {
-       constructor(originalOptions) {
-           const options = Object.create(originalOptions);
-           options.webPreferences = Object.create(options.webPreferences);
+client, jspath, version = select_client()
+if jspath:
+    print('\nOperating on client: %s %s\n'%(client,version))
+    print('Please type the number for your desired option:')
+    
+    # room for expansion (other params can be provided here)
+    options = [ (str(i+1),o) for i,o in enumerate([
+        ('Install ED',),
+        ('Uninstall ED',),
+        #('Update ED',),
+        ('Update LinuxED',),
+        ('Select Client',),
+        ('Exit',),
+    ])]
+    getoption = dict(options).get
+    
+    while True:
+        option,*params = getoption( input( '%s\n> '%('\n'.join('%s. %s'%(i,o) for i,(o,*p) in options) ) ), (None,) )
+        print()
         
-        const originalPreloadScript = options.webPreferences.preload;
+        if option == 'Exit':
+            print("Exiting...")
+            exit()
+            break # shouldn't get here, but just in case.
+        
+        
+        elif option == 'Update LinuxED':
+            print("Updating LinuxED installation...")
+            # check if .git is there, if it is then I know that this was cloned from the git repo and am free to git pull
+            if os.path.exists("%s/.git"%dirpath):
+                os.system("git pull --no-edit") # git pull latest version. works if script hasn't been modified.
+            else:
+                print("Error: Can't find LinuxED folder, did you clone the LinuxED repository?\n")
+    
+    
+        elif option == 'Uninstall ED':
+            print('Uninstalling EnhancedDiscord...')
+            if os.path.exists("%s.backup"%jspath):
+                os.remove(jspath)
+                os.rename("%s.backup"%jspath, jspath)
+                print("Successfully uninstalled EnhancedDiscord!")
+            else:
+                print("Error: Couldn't find index.js backup, did you use the installer to install ED?\n")
+    
+    
+        elif option == 'Install ED':
+            # TODO: version check
+            if not os.path.exists("%s/EnhancedDiscord"%dirpath):
+                print("Cloning ED...")
+                if input("Would you like to have BetterDiscord plugin support in EnhancedDiscord? (y/n)\n>").upper() in {"Y","YES"}:
+                    os.system("git clone https://github.com/rauenzi/EnhancedDiscord -b bd-plugins")
+                else:
+                    os.system("git clone https://github.com/rauenzi/EnhancedDiscord")
+            
+            backuppath = "%s.backup"%jspath
+            if not os.path.exists(backuppath):
+                print("Creating index.js.backup...")
+                with open(jspath,'r') as original:
+                    with open(backuppath,'w') as backup: backup.write(original.read())
+    
+            print("Patching index.js...")
+            with open(jspath,"w") as idx: idx.write(patch)
+            
+            print("Patching dom shit...")
+            with open("%s/EnhancedDiscord/dom_shit.js"%dirpath,"r+") as ds:
+                lines = ds.readlines()
+                lines.insert(0, injdir + "\n") # bug patch
+                ds.seek(0,0); ds.truncate(0)
+                ds.writelines(lines)
+            
+            cfgpath = "%s/EnhancedDiscord/config.json"%dirpath
+            if not os.path.exists(cfgpath):
+                print("Creating config.json...")
+                with open(cfgpath,"w") as cfg: cfg.write("{}")
+        
+            print("EnhancedDiscord installation complete!\n")
+        
+        
+        elif option == 'Select Client':
+            print("Selecting new Discord client...")
+            backup = (client, jspath, version)
+            client, jspath, version = select_client(True)
+            if not jspath: client, jspath, version = backup
+            print('\nOperating on client: %s %s\n'%(client,version))
+    
+        else:
+            print('Error: The specified option was not valid.\n')
 
-           // Make sure Node integration is enabled
-           options.webPreferences.nodeIntegration = true;
-           options.webPreferences.preload = path.join(process.env.injDir, 'dom_shit.js');
-           options.webPreferences.transparency = true;
-
-           super(options);
-           this.__preload = originalPreloadScript;
-       }
-    }
-
-    const electron_path = require.resolve('electron');
-    const browser_window_path = require.resolve(path.resolve(electron_path, '..', '..', 'browser-window.js'));
-    require.cache[browser_window_path].exports = PatchedBrowserWindow;
-    module.exports = require('./core.asar');"""
-    #write the shit to the indexjs file
-    openindex.write(f"{injdir}\n" + endpart)
-    openindex.close()
-    print("Patched index.js...")
-    #read the dom_shit since there's a bug that makes it so you have to redefine injdir
-    opendomshit = open(f"{dirpath}/EnhancedDiscord/dom_shit.js","r")
-    #read the original first line of the file i guess (at this point i'm just doing this from memory, i'm too incompetent to remember what thsi does)
-    originalfirstline = opendomshit.readlines()
-    #replace originalfirstline var with modified one with the injdir
-    originalfirstline.insert(0, injdir + "\n")
-    opendomshit.close()
-    #open it again except this time we can write to it
-    opendomshit = open(f"{dirpath}/EnhancedDiscord/dom_shit.js","w")
-    #write modified originalfirstline
-    opendomshit.writelines(originalfirstline)
-    opendomshit.close()
-    print("Patched dom shit...")
-    #check if config exists so we can make it
-    if os.path.exists(dirpath + "/EnhancedDiscord/config.json"):
-        print("Config already exists, skipping...")
-    else:
-        #if it doesn't exist make it
-        makeconfigfile = open(dirpath + "/EnhancedDiscord/config.json", "w+")
-        makeconfigfile.write("{}")
-        makeconfigfile.close()
-        print("Config file successfully made!")
-    print("EnhancedDiscord installation complete!\n---")
-#placeholder for updating ED, but I don't think I'll actually ever do that
-elif menu == "3":
-    print("Feature not implemented yet! Sorry...")
-elif menu == "4":
-    #check if .git is there, if it is then I know that this was cloned from the git repo and am free to git pull
-    if os.path.exists(dirpath + "/.git"):
-        print("Updating LinuxED installation...")
-        #git pull latest version. works if script hasn't been modified.
-        os.system("git pull --no-edit")
-    else:
-        print("---\nCan't find LinuxED folder, did you clone the LinuxED repository?")
-        print("Exiting...\n---")
-elif menu == "5":
-    print("---\nExiting...")
-    exit() 
+        print('Please type the number for your desired option:')
