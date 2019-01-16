@@ -11,7 +11,7 @@ if os.name == 'nt': print('WARNING: it appears you are running the Linux install
                           'If you are unaware of what you\'re doing, it\'s recommended you close this installer.\n'
                           'Otherwise you may continue at your own risk.\n')
 # Define the starting variables, these are all their own thing.
-username = os.environ['user']
+os.environ['USER']
 dirpath = os.path.dirname(os.path.realpath(__file__))
 injdir = 'process.env.injDir = \'%s/EnhancedDiscord\';'%dirpath
 
