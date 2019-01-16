@@ -20,6 +20,5 @@ To install git on Solus, do `sudo eopkg install git`
 To install git on RedHat or any RedHat derivatives (Fedora, CentOS) do `sudo dnf install git`
 # Installation
 Installation is simple, just open a terminal in your desired LinuxED directory, and do `git clone https://github.com/Cr3atable/LinuxED/` then CD into that directory by doing `cd LinuxED` to get to the LinuxED files.
-[If installation is too hard, use the installation guide in the PyPi branch](https://github.com/Cr3atable/LinuxED/tree/pypi#installation)
 # Usage
 Simply go into your LinuxED directory (`cd LinuxED`) and do `python3 LinuxED.py` to start it up. Then follow all prompts.
