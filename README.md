@@ -6,7 +6,7 @@ LinuxED supports:
 - Flatpak Discord
 - Snap Discord
 - Discord Canary
-- Discord PTB.
+- Discord PTB
 # Features
 - Custom index.js location
 - LinuxED updater (this does not update ED, it updates the LinuxED script)
@@ -16,7 +16,7 @@ LinuxED supports:
 This only requires git and python3.  
 To install git on Debian or any Debian derivatives (Ubuntu, Linux Mint) do `sudo apt install git`  
 To install git on Arch Linux or any Arch Linux derivatives (Manjaro, Antergos) do `sudo pacman -S git`  
-To install git on Solus, do `sudo eopkg install git`
+To install git on Solus, do `sudo eopkg install git`  
 To install git on RedHat or any RedHat derivatives (Fedora, CentOS) do `sudo dnf install git`
 # Installation
 Installation is simple, just open a terminal in your desired LinuxED directory, and do `git clone https://github.com/Cr3atable/LinuxED/` then CD into that directory by doing `cd LinuxED` to get to the LinuxED files.
