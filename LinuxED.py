@@ -96,10 +96,10 @@ def select_client(allow_custom=False):
             print('\nPlease enter the number for the client you wish to patch, or press Enter to exit:')
             result = input('%s\n> '%('\n'.join('%s. %s: %s'%(i,o,v) for i,(o,p,v) in clients)) )
             client, jspath, version = getclient( result, (None,'','') )
-            if client:
+            if client=='CUSTOM':
                 client, jspath, version = validate_custom_client()
-                if jspath: return client, jspath, version
-                else: continue
+                if not jspath: continue
+            if jspath: return client, jspath, version
             if not result:
                 print("\nOperation cancelled...")
                 #input('Press Enter to Exit...')
