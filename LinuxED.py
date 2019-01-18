@@ -14,6 +14,7 @@ if os.name == 'nt': print('WARNING: it appears you are running the Linux install
 os.environ['USER']
 dirpath = os.path.dirname(os.path.realpath(__file__))
 injdir = 'process.env.injDir = \'%s/EnhancedDiscord\';'%dirpath
+username = os.getlogin()
 
 # this is not my code but it's what I put at the end of index.js
 patch = """%s
