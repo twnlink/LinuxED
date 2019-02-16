@@ -21,13 +21,6 @@ patch = """%s
 require(`${process.env.injDir}/injection.js`);
 module.exports = require('./core.asar');"""%injdir
 
-# Tcll: should we really be using static versions??
-discordstableversion = "0.0.5"
-discordcanaryversion = "0.0.65"
-discordptbversion = "0.0.10"
-discordsnapversion = "0.0.5"
-discordflatversion = "0.0.5"
-
 detect_versions = lambda discordpath,idxsubpath: [
     (discordpath+vsn+idxsubpath, vsn) for vsn in (os.listdir(discordpath) if os.path.exists(discordpath) else []) if os.path.isdir(discordpath+vsn) and len(vsn.split('.')) == 3 ]
 
