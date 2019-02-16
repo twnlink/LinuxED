@@ -7,6 +7,7 @@ LinuxED supports:
 - Snap Discord
 - Discord Canary
 - Discord PTB
+- Discord on MacOS
 # Features
 - Custom index.js location
 - LinuxED updater (this does not update ED, it updates the LinuxED script)
