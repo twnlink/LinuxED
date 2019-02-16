@@ -14,7 +14,7 @@ To install git on Debian or any Debian derivatives (Ubuntu, Linux Mint) do `sudo
 To install git on Arch Linux or any Arch Linux derivatives (Manjaro, Antergos) do `sudo pacman -S git`  
 To install git on Solus, do `sudo eopkg install git`  
 To install git on RedHat or any RedHat derivatives (Fedora, CentOS) do `sudo dnf install git`
-# Installation
-Installation is simple, just open a terminal in your desired LinuxED directory, and do `git clone https://github.com/Cr3atable/LinuxED/` then CD into that directory by doing `cd LinuxED` to get to the LinuxED files.
-# Usage
-Simply go into your LinuxED directory (`cd LinuxED`) and do `python3 LinuxED.py` to start it up. Then follow all prompts.
+
+# Installation and Usage
+The proper way to install and use LinuxED is shown in this tutorial video:  
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/9nxcFDB2CtM/0.jpg)](http://www.youtube.com/watch?v=9nxcFDB2CtM "How to install EnhancedDiscord on Linux or MacOS")
