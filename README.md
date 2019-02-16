@@ -17,4 +17,4 @@ To install git on RedHat or any RedHat derivatives (Fedora, CentOS) do `sudo dnf
 
 # Installation and Usage
 The proper way to install and use LinuxED is shown in this tutorial video:  
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/9nxcFDB2CtM/0.jpg)](http://www.youtube.com/watch?v=9nxcFDB2CtM "How to install EnhancedDiscord on Linux or MacOS")
+[![How to install EnhancedDiscord on Linux or MacOS](https://i.imgur.com/3ap7KJ2.png)](http://www.youtube.com/watch?v=9nxcFDB2CtM "How to install EnhancedDiscord on Linux or MacOS")
