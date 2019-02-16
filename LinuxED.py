@@ -7,13 +7,15 @@
 #   for cleaning up the code, making it more maintainable, and extending it's functionality, as well as fixing issues with older python versions.
 
 import os
+import sys
 if os.name == 'nt': print('WARNING: it appears you are running the Linux installer on Windows.\n'
                           'If you are unaware of what you\'re doing, it\'s recommended you close this installer.\n'
                           'Otherwise you may continue at your own risk.\n')
 # Define the starting variables, these are all their own thing.
 username = os.environ['USER']
 dirpath = os.path.dirname(os.path.realpath(__file__))
-injdir = 'process.env.injDir = __dirname;'
+enhanceddir = dirpath + "/EnhancedDiscord"
+injdir = 'process.env.injDir = "%s"' % enhanceddir
 # this is not my code but it's what I put at the end of index.js
 patch = """%s
 const electron = require('electron');
@@ -66,13 +68,22 @@ detect_versions = lambda discordpath,idxsubpath: [
 print('Welcome to the LinuxED installation script.')
 
 # TODO: detect patched clients
-baseclients = {
-    "STABLE" : detect_versions('/home/%s/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
-    "CANARY" : detect_versions('/home/%s/.config/discordcanary/'%username, '/modules/discord_desktop_core/index.js'),
-    "PTB"    : detect_versions('/home/%s/.config/discordptb/'%username, '/modules/discord_desktop_core/index.js'),
+if sys.platform == 'darwin':
+    baseclients = {
+    "STABLE" : detect_versions('/Users/%s/Library/Application Support/discord/'%username, '/modules/discord_desktop_core/index.js'),
+    "CANARY" : detect_versions('/Users/%s/Library/Application Support/discordcanary/'%username, '/modules/discord_desktop_core/index.js'),
+    "PTB"    : detect_versions('/Users/%s/Library/Application Support/discordptb/'%username, '/modules/discord_desktop_core/index.js'),
     "SNAP"   : detect_versions('/home/%s/snap/discord/82/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
     "FLATPAK": detect_versions('/home/%s/.var/app/com.discordapp.Discord/config/discord/'%username, '/modules/discord_desktop_core/index.js')
 }
+else:
+    baseclients = {
+        "STABLE" : detect_versions('/home/%s/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
+        "CANARY" : detect_versions('/home/%s/.config/discordcanary/'%username, '/modules/discord_desktop_core/index.js'),
+        "PTB"    : detect_versions('/home/%s/.config/discordptb/'%username, '/modules/discord_desktop_core/index.js'),
+        "SNAP"   : detect_versions('/home/%s/snap/discord/82/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
+        "FLATPAK": detect_versions('/home/%s/.var/app/com.discordapp.Discord/config/discord/'%username, '/modules/discord_desktop_core/index.js')
+    }
 
 clients = [ (str(i+1),cpv) for i,cpv in enumerate( (c,p,v) for c in [ "STABLE", "CANARY", "PTB", "SNAP", "FLATPAK" ] if baseclients[c] for p,v in baseclients[c] ) ]
 clients.append( (str(len(clients)+1), ("CUSTOM",'', '')) )
@@ -167,10 +178,7 @@ if jspath:
             # TODO: version check
             if not os.path.exists("%s/EnhancedDiscord"%dirpath):
                 print("Cloning ED...")
-                if input("Would you like to have BetterDiscord plugin support in EnhancedDiscord? (y/n)\n>").upper() in {"Y","YES"}:
-                    os.system("git clone https://github.com/rauenzi/EnhancedDiscord -b bd-plugins")
-                else:
-                    os.system("git clone https://github.com/rauenzi/EnhancedDiscord")
+                os.system("git clone https://github.com/joe27g/EnhancedDiscord")
             
             backuppath = "%s.backup"%jspath
             if not os.path.exists(backuppath):
