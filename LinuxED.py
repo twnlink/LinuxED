@@ -8,6 +8,11 @@
 
 import os
 import sys
+import urllib.request
+import zipfile
+import distutils.core
+import shutil
+
 if os.name == 'nt': print('WARNING: it appears you are running the Linux installer on Windows.\n'
                           'If you are unaware of what you\'re doing, it\'s recommended you close this installer.\n'
                           'Otherwise you may continue at your own risk.\n')
@@ -97,7 +102,7 @@ if jspath:
     options = [ (str(i+1),o) for i,o in enumerate([
         ('Install ED',),
         ('Uninstall ED',),
-        #('Update ED',),
+        ('Update ED',),
         ('Update LinuxED',),
         ('Select Client',),
         ('Exit',),
@@ -154,15 +159,23 @@ if jspath:
                 with open(cfgpath,"w") as cfg: cfg.write("{}")
         
             print("EnhancedDiscord installation complete!\n")
-        
-        
+
+        elif option == 'Update ED':
+            print("Updating ED...")
+            urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', 'update.zip')
+            with zipfile.ZipFile("update.zip","r") as zip_ref:
+                zip_ref.extractall(".")
+            distutils.dir_util.copy_tree('./EnhancedDiscord-master', './EnhancedDiscord')
+            shutil.rmtree("EnhancedDiscord-master")
+            os.remove("update.zip")
+            print("Update complete!")
         elif option == 'Select Client':
             print("Selecting new Discord client...")
             backup = (client, jspath, version)
             client, jspath, version = select_client(True)
             if not jspath: client, jspath, version = backup
             print('\nOperating on client: %s %s\n'%(client,version))
-    
+
         else:
             print('Error: The specified option was not valid.\n')
 
