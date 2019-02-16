@@ -137,9 +137,13 @@ if jspath:
             else:
                 print("Error: Couldn't find index.js backup, did you use the installer to install ED?\n")
     
-    
         elif option == 'Install ED':
-            # TODO: version check
+            if os.path.exists("%s.backup"%jspath):
+                print('Uninstalling EnhancedDiscord...')
+                os.remove(jspath)
+                os.rename("%s.backup"%jspath, jspath)
+                print("Successfully uninstalled EnhancedDiscord!")
+
             if not os.path.exists("%s/EnhancedDiscord"%dirpath):
                 print("Cloning ED...")
                 os.system("git clone https://github.com/joe27g/EnhancedDiscord")
