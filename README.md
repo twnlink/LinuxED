@@ -9,11 +9,14 @@ It also supports all versions of Discord (PTB, Stable, Canary, etc.)
 - LinuxED updater (this does not update ED, it updates the LinuxED script)
 - Automates all EnhancedDiscord installation on Linux.
 # Requirements
-This only requires git and python3.  
+This only requires Git and Python3.  
 To install git on Debian or any Debian derivatives (Ubuntu, Linux Mint) do `sudo apt install git`  
 To install git on Arch Linux or any Arch Linux derivatives (Manjaro, Antergos) do `sudo pacman -S git`  
 To install git on Solus, do `sudo eopkg install git`  
 To install git on RedHat or any RedHat derivatives (Fedora, CentOS) do `sudo dnf install git`
+
+You will need Python's distutils, which most commonly has the package name `python3-distutils`  
+To install Python's distutils on Debian or any Debian derivatives (Ubuntu, Linux Mint) do `sudo apt install python3-distutils`
 
 # Installation and Usage
 The proper way to install and use LinuxED is shown in this tutorial video:  
