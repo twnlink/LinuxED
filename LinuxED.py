@@ -172,20 +172,23 @@ if jspath:
             print("EnhancedDiscord installation complete!\n")
 
         elif option == 'Update ED':
-            print("Updating ED...")
-            urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', 'update.zip')
-            with zipfile.ZipFile("update.zip","r") as zip_ref:
-                zip_ref.extractall(".")
-            distutils.dir_util.copy_tree('./EnhancedDiscord-master', './EnhancedDiscord')
-            shutil.rmtree("EnhancedDiscord-master")
-            os.remove("update.zip")
-            print("Patching dom shit...")	
-            with open("%s/EnhancedDiscord/dom_shit.js"%dirpath,"r+") as ds:	
-                lines = ds.readlines()	
-                lines.insert(0, injdir + "\n") # bug patch	
-                ds.seek(0,0); ds.truncate(0)	
-                ds.writelines(lines)
-            print("Update complete!")
+            if os.path.exists("%s/EnhancedDiscord"%dirpath):
+                print("Updating ED...")
+                urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', 'update.zip')
+                with zipfile.ZipFile("update.zip","r") as zip_ref:
+                    zip_ref.extractall(".")
+                distutils.dir_util.copy_tree('./EnhancedDiscord-master', './EnhancedDiscord')
+                shutil.rmtree("EnhancedDiscord-master")
+                os.remove("update.zip")
+                print("Patching dom shit...")	
+                with open("%s/EnhancedDiscord/dom_shit.js"%dirpath,"r+") as ds:	
+                    lines = ds.readlines()	
+                    lines.insert(0, injdir + "\n") # bug patch	
+                    ds.seek(0,0); ds.truncate(0)	
+                    ds.writelines(lines)
+                print("Update complete!")
+            else:
+                print("It seems EnhancedDiscord is not installed so it was unable to be updated.")
         elif option == 'Select Client':
             print("Selecting new Discord client...")
             backup = (client, jspath, version)
