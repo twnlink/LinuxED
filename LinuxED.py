@@ -156,13 +156,6 @@ if jspath:
     
             print("Patching index.js...")
             with open(jspath,"w") as idx: idx.write(patch)
-            
-            print("Patching dom shit...")	
-            with open("%s/EnhancedDiscord/dom_shit.js"%dirpath,"r+") as ds:	
-                lines = ds.readlines()	
-                lines.insert(0, injdir + "\n") # bug patch	
-                ds.seek(0,0); ds.truncate(0)	
-                ds.writelines(lines)
 
             cfgpath = "%s/EnhancedDiscord/config.json"%dirpath
             if not os.path.exists(cfgpath):
@@ -180,12 +173,6 @@ if jspath:
                 distutils.dir_util.copy_tree('./EnhancedDiscord-master', './EnhancedDiscord')
                 shutil.rmtree("EnhancedDiscord-master")
                 os.remove("update.zip")
-                print("Patching dom shit...")	
-                with open("%s/EnhancedDiscord/dom_shit.js"%dirpath,"r+") as ds:	
-                    lines = ds.readlines()	
-                    lines.insert(0, injdir + "\n") # bug patch	
-                    ds.seek(0,0); ds.truncate(0)	
-                    ds.writelines(lines)
                 print("Update complete!")
             else:
                 print("It seems EnhancedDiscord is not installed so it was unable to be updated.")
