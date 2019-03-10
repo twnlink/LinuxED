@@ -120,12 +120,14 @@ if jspath:
         
         
         elif option == 'Update LinuxED':
-            print("Updating LinuxED installation...")
-            # check if .git is there, if it is then I know that this was cloned from the git repo and am free to git pull
-            if os.path.exists("%s/.git"%dirpath):
-                os.system("git pull --no-edit") # git pull latest version. works if script hasn't been modified.
-            else:
-                print("Error: Can't find LinuxED folder, did you clone the LinuxED repository?\n")
+            print("Updating LinuxED...")
+            urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', 'update.zip')
+            with zipfile.ZipFile("update.zip","r") as zip_ref:
+                zip_ref.extractall(".")
+            distutils.dir_util.copy_tree('./LinuxED-master/', dirpath)
+            shutil.rmtree("LinuxED-master")
+            os.remove("update.zip")
+            print("Update complete!")
     
     
         elif option == 'Uninstall ED':
@@ -144,7 +146,7 @@ if jspath:
                 os.rename("%s.backup"%jspath, jspath)
                 print("Successfully uninstalled EnhancedDiscord!")
 
-            if not os.path.exists("%s/EnhancedDiscord"%dirpath):
+            if not os.path.exists(enhanceddir):
                 print("Cloning ED...")
                 os.system("git clone https://github.com/joe27g/EnhancedDiscord")
             
@@ -157,7 +159,7 @@ if jspath:
             print("Patching index.js...")
             with open(jspath,"w") as idx: idx.write(patch)
 
-            cfgpath = "%s/EnhancedDiscord/config.json"%dirpath
+            cfgpath = "%s/config.json"%dirpath
             if not os.path.exists(cfgpath):
                 print("Creating config.json...")
                 with open(cfgpath,"w") as cfg: cfg.write("{}")
