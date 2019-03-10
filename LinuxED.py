@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # -*- coding: utf-8 -*-
 
 # written by Creatable
@@ -162,7 +164,7 @@ if jspath:
             print("Patching index.js...")
             with open(jspath,"w") as idx: idx.write(patch)
 
-            cfgpath = "%s/config.json"%dirpath
+            cfgpath = "%s/config.json"%enhanceddir
             if not os.path.exists(cfgpath):
                 print("Creating config.json...")
                 with open(cfgpath,"w") as cfg: cfg.write("{}")
