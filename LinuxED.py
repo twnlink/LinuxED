@@ -124,6 +124,9 @@ if jspath:
             urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', 'update.zip')
             with zipfile.ZipFile("update.zip","r") as zip_ref:
                 zip_ref.extractall(".")
+            os.remove("./LinuxED-master/LICENSE")
+            os.remove("./LinuxED-master/README.md")
+            os.remove("./LinuxED-master/.gitignore")
             distutils.dir_util.copy_tree('./LinuxED-master/', dirpath)
             shutil.rmtree("LinuxED-master")
             os.remove("update.zip")
