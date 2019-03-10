@@ -167,7 +167,7 @@ if jspath:
             print("EnhancedDiscord installation complete!\n")
 
         elif option == 'Update ED':
-            if os.path.exists("%s/EnhancedDiscord"%dirpath):
+            if os.path.exists(enhanceddir):
                 print("Updating ED...")
                 urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', 'update.zip')
                 with zipfile.ZipFile("update.zip","r") as zip_ref:
