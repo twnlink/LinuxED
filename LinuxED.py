@@ -177,7 +177,7 @@ if jspath:
                 with zipfile.ZipFile("EnhancedDiscord.zip","r") as zip_ref:
                     zip_ref.extractall(".")
                 os.rename("EnhancedDiscord-master", "EnhancedDiscord")
-                os.remove("EnhancedDiscord.zip");
+                os.remove("EnhancedDiscord.zip")
             
             backuppath = "%s.backup"%jspath
             if not os.path.exists(backuppath):
