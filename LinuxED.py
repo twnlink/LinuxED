@@ -14,15 +14,27 @@ import urllib.request
 import zipfile
 import distutils.core
 import shutil
+import getpass
 
+"""Comment out old Windows notice
 if os.name == 'nt': print('WARNING: it appears you are running the Linux installer on Windows.\n'
                           'If you are unaware of what you\'re doing, it\'s recommended you close this installer.\n'
-                          'Otherwise you may continue at your own risk.\n')
+                          'Otherwise you may continue at your own risk.\n')"""
+
+if os.name == 'nt': print('WARNING: it appears you are running LinuxED on Windows.\n'
+                          'LinuxED was not originally made for Windows and Windows compatibility is not maintained.\n'
+                          'Continue at your own risk.'
 # Define the starting variables, these are all their own thing.
-username = os.environ['USER']
+username = getpass.getuser()
 dirpath = os.path.dirname(os.path.realpath(__file__))
-enhanceddir = dirpath + "/EnhancedDiscord"
-injdir = 'process.env.injDir = "%s"' % enhanceddir
+
+if os.name == 'nt':
+    enhanceddir = dirpath + "\\EnhancedDiscord"
+    injdir = 'process.env.injDir = "%s"' % enhanceddir.encode('unicode_escape').decode("utf-8")
+else:
+    enhanceddir = dirpath + "/EnhancedDiscord"
+    injdir = 'process.env.injDir = "%s"' % enhanceddir
+
 # this is not my code but it's what I put at the end of index.js
 patch = """%s
 require(`${process.env.injDir}/injection.js`);
@@ -42,6 +54,14 @@ if sys.platform == 'darwin':
     "SNAP"   : detect_versions('/home/%s/snap/discord/82/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
     "FLATPAK": detect_versions('/home/%s/.var/app/com.discordapp.Discord/config/discord/'%username, '/modules/discord_desktop_core/index.js')
 }
+elif os.name == 'nt':
+    baseclients = {
+        "STABLE" : detect_versions('C:/Users/%s/AppData/Roaming/Discord/'%username, '/modules/discord_desktop_core/index.js'),
+        "CANARY" : detect_versions('C:/Users/%s/AppData/Roaming/Discord Canary/'%username, '/modules/discord_desktop_core/index.js'),
+        "PTB"    : detect_versions('C:/Users/%s/AppData/Roaming/Discord PTB/'%username, '/modules/discord_desktop_core/index.js'),
+        "SNAP"   : detect_versions('/home/%s/snap/discord/82/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
+        "FLATPAK": detect_versions('/home/%s/.var/app/com.discordapp.Discord/config/discord/'%username, '/modules/discord_desktop_core/index.js')
+    }
 else:
     baseclients = {
         "STABLE" : detect_versions('/home/%s/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
@@ -152,8 +172,12 @@ if jspath:
                 print("Successfully uninstalled EnhancedDiscord!")
 
             if not os.path.exists(enhanceddir):
-                print("Cloning ED...")
-                os.system("git clone https://github.com/joe27g/EnhancedDiscord")
+                print("Downloading ED...")
+                urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', 'EnhancedDiscord.zip')
+                with zipfile.ZipFile("EnhancedDiscord.zip","r") as zip_ref:
+                    zip_ref.extractall(".")
+                os.rename("EnhancedDiscord-master", "EnhancedDiscord")
+                os.remove("EnhancedDiscord.zip");
             
             backuppath = "%s.backup"%jspath
             if not os.path.exists(backuppath):
