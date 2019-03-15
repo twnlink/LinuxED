@@ -23,7 +23,7 @@ if os.name == 'nt': print('WARNING: it appears you are running the Linux install
 
 if os.name == 'nt': print('WARNING: it appears you are running LinuxED on Windows.\n'
                           'LinuxED was not originally made for Windows and Windows compatibility is not maintained.\n'
-                          'Continue at your own risk.'
+                          'Continue at your own risk.')
 # Define the starting variables, these are all their own thing.
 username = getpass.getuser()
 dirpath = os.path.dirname(os.path.realpath(__file__))
