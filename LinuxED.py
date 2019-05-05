@@ -26,7 +26,7 @@ if os.name == 'nt': print('WARNING: it appears you are running LinuxED on Window
                           'Continue at your own risk.')
 # Define the starting variables, these are all their own thing.
 username = getpass.getuser()
-dirpath = os.path.dirname(os.path.realpath(__file__))
+dirpath = os.path.realpath('')
 
 if os.name == 'nt':
     enhanceddir = dirpath + "\\EnhancedDiscord"
@@ -143,7 +143,7 @@ if jspath:
         
         elif option == 'Update LinuxED':
             print("Updating LinuxED...")
-            urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', 'update.zip')
+            urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', 'XmcnqfhA0uLinuxEDUpdate.zip')
             with zipfile.ZipFile("update.zip","r") as zip_ref:
                 zip_ref.extractall(".")
             os.remove("./LinuxED-master/LICENSE")
@@ -151,7 +151,7 @@ if jspath:
             os.remove("./LinuxED-master/.gitignore")
             distutils.dir_util.copy_tree('./LinuxED-master/', dirpath)
             shutil.rmtree("LinuxED-master")
-            os.remove("update.zip")
+            os.remove("XmcnqfhA0uLinuxEDUpdate.zip")
             print("Update complete!")
     
     
