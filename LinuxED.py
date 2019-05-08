@@ -221,7 +221,7 @@ if __name__ == "__main__":
                     urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', '%s/EDUpdate.zip' % tempdir)
                     with zipfile.ZipFile("%s/EDUpdate.zip" % tempdir,"r") as zip_ref:
                         zip_ref.extractall(tempdir)
-                    distutils.dir_util.copy_tree('%s/EnhancedDiscord-master' % tempdir, './EnhancedDiscord')
+                    distutils.dir_util.copy_tree('%s/EnhancedDiscord-master' % tempdir, '%s/EnhancedDiscord' % dirpath)
                     shutil.rmtree("%s/EnhancedDiscord-master" % tempdir)
                     os.remove("%s/EDUpdate.zip" % tempdir)
                     print("Update complete!")
