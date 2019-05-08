@@ -27,6 +27,7 @@ if os.name == 'nt': print('WARNING: it appears you are running LinuxED on Window
 # Define the starting variables, these are all their own thing.
 username = getpass.getuser()
 dirpath = os.path.realpath('')
+filepath = os.path.dirname(os.path.realpath(__file__))
 
 if os.name == 'nt':
     enhanceddir = dirpath + "\\EnhancedDiscord"
@@ -143,15 +144,15 @@ if jspath:
         
         elif option == 'Update LinuxED':
             print("Updating LinuxED...")
-            urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', 'XmcnqfhA0uLinuxEDUpdate.zip')
-            with zipfile.ZipFile("XmcnqfhA0uLinuxEDUpdate.zip","r") as zip_ref:
-                zip_ref.extractall(".")
-            os.remove("./LinuxED-master/LICENSE")
-            os.remove("./LinuxED-master/README.md")
-            os.remove("./LinuxED-master/.gitignore")
-            distutils.dir_util.copy_tree('./LinuxED-master/', dirpath)
-            shutil.rmtree("LinuxED-master")
-            os.remove("XmcnqfhA0uLinuxEDUpdate.zip")
+            urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', '%s/LinuxEDUpdate.zip' % filepath)
+            with zipfile.ZipFile("%s/LinuxEDUpdate.zip" % filepath,"r") as zip_ref:
+                zip_ref.extractall(filepath)
+            os.remove("%s/LinuxED-master/LICENSE" % filepath)
+            os.remove("%s/LinuxED-master/README.md" % filepath)
+            os.remove("%s/LinuxED-master/.gitignore" % filepath)
+            distutils.dir_util.copy_tree('%s/LinuxED-master/' % filepath, filepath)
+            shutil.rmtree("%s/LinuxED-master" % filepath)
+            os.remove("%s/LinuxEDUpdate.zip" % filepath)
             print("Update complete!")
     
     
@@ -198,15 +199,15 @@ if jspath:
         elif option == 'Update ED':
             if os.path.exists(enhanceddir):
                 print("Updating ED...")
-                urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', 'update.zip')
-                with zipfile.ZipFile("update.zip","r") as zip_ref:
+                urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', 'EDUpdate.zip')
+                with zipfile.ZipFile("EDUpdate.zip","r") as zip_ref:
                     zip_ref.extractall(".")
                 distutils.dir_util.copy_tree('./EnhancedDiscord-master', './EnhancedDiscord')
                 shutil.rmtree("EnhancedDiscord-master")
-                os.remove("update.zip")
+                os.remove("EDUpdate.zip")
                 print("Update complete!")
             else:
-                print("It seems EnhancedDiscord is not installed so it was unable to be updated.")
+                print("It seems EnhancedDiscord is not installed in the current directory so it was unable to be updated.")
         elif option == 'Select Client':
             print("Selecting new Discord client...")
             backup = (client, jspath, version)
