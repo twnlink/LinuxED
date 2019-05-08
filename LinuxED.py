@@ -28,12 +28,11 @@ if os.name == 'nt': print('WARNING: it appears you are running LinuxED on Window
 username = getpass.getuser()
 dirpath = os.path.realpath('')
 filepath = os.path.dirname(os.path.realpath(__file__))
+enhanceddir = os.path.join(dirpath, "EnhancedDiscord")
 
 if os.name == 'nt':
-    enhanceddir = dirpath + "\\EnhancedDiscord"
     injdir = 'process.env.injDir = "%s"' % enhanceddir.encode('unicode_escape').decode("utf-8")
 else:
-    enhanceddir = dirpath + "/EnhancedDiscord"
     injdir = 'process.env.injDir = "%s"' % enhanceddir
 
 # this is not my code but it's what I put at the end of index.js
