@@ -1,5 +1,5 @@
 # LinuxED
-Installer for EnhancedDiscord that works on Linux. The one provided by EnhancedDiscord does not work on Linux, and I was bored when making this. This project is not affiliated with Discord, or EnhancedDiscord in any way. I made this out of boredom and to see how good of something I could make in Python, so please note that I am still learning and that this is poorly coded, and I'm aware of how messy, inconsistent, and idiotic this script looks.
+LinuxED is an alternative installer for EnhancedDiscord that works on Linux. This project is not affiliated with Discord, or EnhancedDiscord in any way. I made this while learning Python and I'm aware of how messy, inconsistent, and poorly coded this script looks.
 # Operating systems supported
 LinuxED supports most major distributions of Linux, MacOS, and even Windows.  
 It also supports all versions of Discord (PTB, Stable, Canary, etc.)
