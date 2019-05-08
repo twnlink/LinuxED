@@ -32,10 +32,12 @@ if __name__ == "__main__":
     filepath = os.path.dirname(os.path.realpath(__file__))
     tempdir = tempfile.gettempdir()
     scriptname = os.path.basename(__file__)
-    enhanceddir = os.path.join(dirpath, "EnhancedDiscord")
+
     if os.name == 'nt':
+        enhanceddir = dirpath + "\\EnhancedDiscord"
         injdir = 'process.env.injDir = "%s"' % enhanceddir.encode('unicode_escape').decode("utf-8")
     else:
+        enhanceddir = dirpath + "/EnhancedDiscord"
         injdir = 'process.env.injDir = "%s"' % enhanceddir
 
     # this is not my code but it's what I put at the end of index.js
@@ -149,16 +151,16 @@ if __name__ == "__main__":
                 urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', '%s/LinuxEDUpdate.zip' % tempdir)
                 with zipfile.ZipFile("%s/LinuxEDUpdate.zip" % tempdir,"r") as zip_ref:
                     zip_ref.extractall(tempdir)
-                os.remove("%s/LinuxED-master/LICENSE" % tempdir)
-                os.remove("%s/LinuxED-master/README.md" % tempdir)
-                os.remove("%s/LinuxED-master/.gitignore" % tempdir)
+                #os.remove("%s/LinuxED-master/LICENSE" % tempdir)
+                #os.remove("%s/LinuxED-master/README.md" % tempdir)
+                #os.remove("%s/LinuxED-master/.gitignore" % tempdir)
                 os.rename("%s/LinuxED-master/LinuxED.py" % tempdir, "%s/LinuxED-master/%s" % (tempdir, scriptname))
                 distutils.dir_util.copy_tree('%s/LinuxED-master/' % tempdir, filepath)
                 shutil.rmtree("%s/LinuxED-master" % tempdir)
                 os.remove("%s/LinuxEDUpdate.zip" % tempdir)
                 if os.name != "nt":
                     try:
-                        os.system("chmod +x %s" % filepath + "/" + scriptname)
+                        os.system("chmod +x %s" % os.path.join(filepath, scriptname))
                     except:
                         print("Couldn't make script executable...\nYou may experience problems when trying to use it again")
                 print("Update complete!")
