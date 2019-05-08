@@ -29,21 +29,18 @@ if __name__ == "__main__":
     # Define the starting variables, these are all their own thing.
     username = getpass.getuser()
     dirpath = os.path.realpath('')
+    currentdir = True
+    if 'XDG_DATA_HOME' in os.environ:
+        if os.path.exists(os.path.join(os.environ['XDG_DATA_HOME'], "EnhancedDiscord")):
+            dirpath = os.environ['XDG_DATA_HOME']
+            currentdir = False
+    elif 'HOME' in os.environ:
+        if os.path.exists(os.path.join(os.path.join(os.environ['HOME'], '.local', 'share'), "EnhancedDiscord")):
+            dirpath = os.path.join(os.environ['HOME'], '.local', 'share')
+            currentdir = False
     filepath = os.path.dirname(os.path.realpath(__file__))
     tempdir = tempfile.gettempdir()
     scriptname = os.path.basename(__file__)
-
-    if os.name == 'nt':
-        enhanceddir = dirpath + "\\EnhancedDiscord"
-        injdir = 'process.env.injDir = "%s"' % enhanceddir.encode('unicode_escape').decode("utf-8")
-    else:
-        enhanceddir = dirpath + "/EnhancedDiscord"
-        injdir = 'process.env.injDir = "%s"' % enhanceddir
-
-    # this is not my code but it's what I put at the end of index.js
-    patch = """%s
-    require(`${process.env.injDir}/injection.js`);
-    module.exports = require('./core.asar');"""%injdir
 
     detect_versions = lambda discordpath,idxsubpath: [
         (discordpath+vsn+idxsubpath, vsn) for vsn in (os.listdir(discordpath) if os.path.exists(discordpath) else []) if os.path.isdir(discordpath+vsn) and len(vsn.split('.')) == 3 ]
@@ -122,21 +119,33 @@ if __name__ == "__main__":
 
     client, jspath, version = select_client()
     if jspath:
-        print('\nOperating on client: %s %s\n'%(client,version))
-        print('Please type the number for your desired option:')
-        
-        # room for expansion (other params can be provided here)
-        options = [ (str(i+1),o) for i,o in enumerate([
-            ('Install ED',),
-            ('Uninstall ED',),
-            ('Update ED',),
-            ('Update LinuxED',),
-            ('Select Client',),
-            ('Exit',),
-        ])]
-        getoption = dict(options).get
-        
         while True:
+            print('\nOperating on client: %s %s\n'%(client,version))
+            print('Please type the number for your desired option:')
+            enhanceddir = os.path.join(dirpath, "EnhancedDiscord")
+            if os.name == 'nt':
+                injdir = 'process.env.injDir = "%s"' % enhanceddir.encode('unicode_escape').decode("utf-8")
+            else:
+                injdir = 'process.env.injDir = "%s"' % enhanceddir
+
+            # this is not my code but it's what I put at the end of index.js
+            patch = """%s
+            require(`${process.env.injDir}/injection.js`);
+            module.exports = require('./core.asar');"""%injdir
+
+            # room for expansion (other params can be provided here)
+            optionsdict = [('Install ED',),('Uninstall ED',),('Update ED',),('Update LinuxED',),('Select Client',)]
+            if currentdir == False:
+                optionsdict.append(('Use current directory',))
+            else:
+                if 'XDG_DATA_HOME' in os.environ:
+                    optionsdict.append(('Use $XDG_DATA_HOME',))
+                if 'HOME' in os.environ:
+                    optionsdict.append(('Use $HOME',))
+            optionsdict.append(('Exit',))
+            options = [ (str(i+1),o) for i,o in enumerate(optionsdict)]
+            getoption = dict(options).get
+
             option,*params = getoption( input( '%s\n> '%('\n'.join('%s. %s'%(i,o) for i,(o,*p) in options) ) ), (None,) )
             print()
             
@@ -184,11 +193,11 @@ if __name__ == "__main__":
 
                 if not os.path.exists(enhanceddir):
                     print("Downloading ED...")
-                    urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', 'EnhancedDiscord.zip')
-                    with zipfile.ZipFile("EnhancedDiscord.zip","r") as zip_ref:
-                        zip_ref.extractall(".")
-                    os.rename("EnhancedDiscord-master", "EnhancedDiscord")
-                    os.remove("EnhancedDiscord.zip")
+                    urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', '%s/EnhancedDiscord.zip' % dirpath)
+                    with zipfile.ZipFile("%s/EnhancedDiscord.zip" % dirpath,"r") as zip_ref:
+                        zip_ref.extractall(dirpath)
+                    os.rename("%s/EnhancedDiscord-master" % dirpath, "%s/EnhancedDiscord" % dirpath)
+                    os.remove("%s/EnhancedDiscord.zip" % dirpath)
                 
                 backuppath = "%s.backup"%jspath
                 if not os.path.exists(backuppath):
@@ -224,8 +233,16 @@ if __name__ == "__main__":
                 client, jspath, version = select_client(True)
                 if not jspath: client, jspath, version = backup
                 print('\nOperating on client: %s %s\n'%(client,version))
+            elif option == 'Use current directory':
+                dirpath = os.path.realpath('')
+                currentdir = True
+            elif option == 'Use $XDG_DATA_HOME':
+                dirpath = os.environ['XDG_DATA_HOME']
+                currentdir = False
+            elif option == 'Use $HOME':
+                dirpath = os.path.join(os.environ['HOME'], '.local', 'share')
+                currentdir = False
 
             else:
                 print('Error: The specified option was not valid.\n')
-
             print('Please type the number for your desired option:')
