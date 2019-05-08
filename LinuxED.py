@@ -26,7 +26,12 @@ if os.name == 'nt': print('WARNING: it appears you are running LinuxED on Window
                           'Continue at your own risk.')
 # Define the starting variables, these are all their own thing.
 username = getpass.getuser()
-dirpath = os.path.realpath('')
+if 'XDG_DATA_HOME' in os.environ:
+    dirpath = os.environ['XDG_DATA_HOME']
+elif 'HOME' in os.environ:
+    dirpath = os.path.join(os.environ['HOME'], '.local', 'share')
+else:
+    dirpath = os.path.realpath('')
 filepath = os.path.dirname(os.path.realpath(__file__))
 
 if os.name == 'nt':
