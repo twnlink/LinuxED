@@ -151,9 +151,9 @@ if __name__ == "__main__":
                 urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', '%s/LinuxEDUpdate.zip' % tempdir)
                 with zipfile.ZipFile("%s/LinuxEDUpdate.zip" % tempdir,"r") as zip_ref:
                     zip_ref.extractall(tempdir)
-                #os.remove("%s/LinuxED-master/LICENSE" % tempdir)
-                #os.remove("%s/LinuxED-master/README.md" % tempdir)
-                #os.remove("%s/LinuxED-master/.gitignore" % tempdir)
+                os.remove("%s/LinuxED-master/LICENSE" % tempdir)
+                os.remove("%s/LinuxED-master/README.md" % tempdir)
+                os.remove("%s/LinuxED-master/.gitignore" % tempdir)
                 os.rename("%s/LinuxED-master/LinuxED.py" % tempdir, "%s/LinuxED-master/%s" % (tempdir, scriptname))
                 distutils.dir_util.copy_tree('%s/LinuxED-master/' % tempdir, filepath)
                 shutil.rmtree("%s/LinuxED-master" % tempdir)
@@ -163,7 +163,7 @@ if __name__ == "__main__":
                         os.system("chmod +x %s" % os.path.join(filepath, scriptname))
                     except:
                         print("Couldn't make script executable...\nYou may experience problems when trying to use it again")
-                print("Update complete!")
+                print("Update complete!\nPlease restart LinuxED for the update to take effect.")
         
         
             elif option == 'Uninstall ED':
@@ -215,7 +215,7 @@ if __name__ == "__main__":
                     distutils.dir_util.copy_tree('%s/EnhancedDiscord-master' % tempdir, './EnhancedDiscord')
                     shutil.rmtree("%s/EnhancedDiscord-master" % tempdir)
                     os.remove("%s/EDUpdate.zip" % tempdir)
-                    print("Update complete!\nPlease restart LinuxED for the update to take effect.")
+                    print("Update complete!")
                 else:
                     print("It seems EnhancedDiscord is not installed in the current directory so it was unable to be updated.")
             elif option == 'Select Client':
