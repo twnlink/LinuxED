@@ -42,18 +42,6 @@ if __name__ == "__main__":
     tempdir = tempfile.gettempdir()
     scriptname = os.path.basename(__file__)
 
-    if os.name == 'nt':
-        enhanceddir = dirpath + "\\EnhancedDiscord"
-        injdir = 'process.env.injDir = "%s"' % enhanceddir.encode('unicode_escape').decode("utf-8")
-    else:
-        enhanceddir = dirpath + "/EnhancedDiscord"
-        injdir = 'process.env.injDir = "%s"' % enhanceddir
-
-    # this is not my code but it's what I put at the end of index.js
-    patch = """%s
-    require(`${process.env.injDir}/injection.js`);
-    module.exports = require('./core.asar');"""%injdir
-
     detect_versions = lambda discordpath,idxsubpath: [
         (discordpath+vsn+idxsubpath, vsn) for vsn in (os.listdir(discordpath) if os.path.exists(discordpath) else []) if os.path.isdir(discordpath+vsn) and len(vsn.split('.')) == 3 ]
 
@@ -134,12 +122,21 @@ if __name__ == "__main__":
         while True:
             print('\nOperating on client: %s %s\n'%(client,version))
             print('Please type the number for your desired option:')
-            
+            enhanceddir = os.path.join(dirpath, "EnhancedDiscord")
+            if os.name == 'nt':
+                injdir = 'process.env.injDir = "%s"' % enhanceddir.encode('unicode_escape').decode("utf-8")
+            else:
+                injdir = 'process.env.injDir = "%s"' % enhanceddir
+
+            # this is not my code but it's what I put at the end of index.js
+            patch = """%s
+            require(`${process.env.injDir}/injection.js`);
+            module.exports = require('./core.asar');"""%injdir
+
             # room for expansion (other params can be provided here)
             optionsdict = [('Install ED',),('Uninstall ED',),('Update ED',),('Update LinuxED',),('Select Client',)]
             if currentdir == False:
                 optionsdict.append(('Use current directory',))
-                currentdir = True
             else:
                 if 'XDG_DATA_HOME' in os.environ:
                     optionsdict.append(('Use $XDG_DATA_HOME',))
@@ -196,11 +193,11 @@ if __name__ == "__main__":
 
                 if not os.path.exists(enhanceddir):
                     print("Downloading ED...")
-                    urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', 'EnhancedDiscord.zip')
-                    with zipfile.ZipFile("EnhancedDiscord.zip","r") as zip_ref:
-                        zip_ref.extractall(".")
-                    os.rename("EnhancedDiscord-master", "EnhancedDiscord")
-                    os.remove("EnhancedDiscord.zip")
+                    urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', '%s/EnhancedDiscord.zip' % dirpath)
+                    with zipfile.ZipFile("%s/EnhancedDiscord.zip" % dirpath,"r") as zip_ref:
+                        zip_ref.extractall(dirpath)
+                    os.rename("%s/EnhancedDiscord-master" % dirpath, "%s/EnhancedDiscord" % dirpath)
+                    os.remove("%s/EnhancedDiscord.zip" % dirpath)
                 
                 backuppath = "%s.backup"%jspath
                 if not os.path.exists(backuppath):
@@ -248,6 +245,4 @@ if __name__ == "__main__":
 
             else:
                 print('Error: The specified option was not valid.\n')
-
             print('Please type the number for your desired option:')
-
