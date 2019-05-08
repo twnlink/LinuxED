@@ -32,12 +32,10 @@ if __name__ == "__main__":
     filepath = os.path.dirname(os.path.realpath(__file__))
     tempdir = tempfile.gettempdir()
     scriptname = os.path.basename(__file__)
-
+    enhanceddir = os.path.join(dirpath, "EnhancedDiscord")
     if os.name == 'nt':
-        enhanceddir = dirpath + "\\EnhancedDiscord"
         injdir = 'process.env.injDir = "%s"' % enhanceddir.encode('unicode_escape').decode("utf-8")
     else:
-        enhanceddir = dirpath + "/EnhancedDiscord"
         injdir = 'process.env.injDir = "%s"' % enhanceddir
 
     # this is not my code but it's what I put at the end of index.js
