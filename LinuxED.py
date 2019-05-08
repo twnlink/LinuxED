@@ -81,7 +81,7 @@ if __name__ == "__main__":
         while True:
             print("\nPlease enter the location of your client's index.js file.")
             jspath = input('> ')
-            if os.path.exists(jspath): return 'CUSTOM', jspath, '' # TODO: can we detect the version of a custom client?
+            if os.path.exists(jspath) and os.path.isfile(jspath): return 'CUSTOM', jspath, '' # TODO: can we detect the version of a custom client?
             elif not jspath:
                 print("\nOperation cancelled...")
                 return 'CUSTOM', jspath, ''
