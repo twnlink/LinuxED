@@ -35,7 +35,7 @@ if __name__ == "__main__":
             dirpath = os.environ['XDG_DATA_HOME']
             currentdir = False
     elif 'HOME' in os.environ:
-        if os.path.exists(os.path.join(os.path.join(os.environ['HOME'], '.local', 'share'), "EnhancedDiscord")):
+         if os.path.exists(os.path.join(os.environ['HOME'], '.local', 'share', "EnhancedDiscord")):
             dirpath = os.path.join(os.environ['HOME'], '.local', 'share')
             currentdir = False
     filepath = os.path.dirname(os.path.realpath(__file__))
