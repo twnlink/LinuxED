@@ -144,7 +144,7 @@ if jspath:
         elif option == 'Update LinuxED':
             print("Updating LinuxED...")
             urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', 'XmcnqfhA0uLinuxEDUpdate.zip')
-            with zipfile.ZipFile("update.zip","r") as zip_ref:
+            with zipfile.ZipFile("XmcnqfhA0uLinuxEDUpdate.zip","r") as zip_ref:
                 zip_ref.extractall(".")
             os.remove("./LinuxED-master/LICENSE")
             os.remove("./LinuxED-master/README.md")
