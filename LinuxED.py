@@ -47,33 +47,28 @@ if __name__ == "__main__":
 
     print('Welcome to the LinuxED installation script.')
 
-    # TODO: detect patched clients
+    baseclients = {
+        "STABLE" : detect_versions('/home/%s/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
+        "CANARY" : detect_versions('/home/%s/.config/discordcanary/'%username, '/modules/discord_desktop_core/index.js'),
+        "PTB"    : detect_versions('/home/%s/.config/discordptb/'%username, '/modules/discord_desktop_core/index.js'),
+        "SNAP"   : detect_versions('/home/%s/snap/discord/current/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
+        "FLATPAK": detect_versions('/home/%s/.var/app/com.discordapp.Discord/config/discord/'%username, '/modules/discord_desktop_core/index.js')
+    }
+
     if sys.platform == 'darwin':
         baseclients = {
         "STABLE" : detect_versions('/Users/%s/Library/Application Support/discord/'%username, '/modules/discord_desktop_core/index.js'),
         "CANARY" : detect_versions('/Users/%s/Library/Application Support/discordcanary/'%username, '/modules/discord_desktop_core/index.js'),
-        "PTB"    : detect_versions('/Users/%s/Library/Application Support/discordptb/'%username, '/modules/discord_desktop_core/index.js'),
-        "SNAP"   : detect_versions('/home/%s/snap/discord/current/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
-        "FLATPAK": detect_versions('/home/%s/.var/app/com.discordapp.Discord/config/discord/'%username, '/modules/discord_desktop_core/index.js')
+        "PTB"    : detect_versions('/Users/%s/Library/Application Support/discordptb/'%username, '/modules/discord_desktop_core/index.js')
     }
     elif os.name == 'nt':
         baseclients = {
             "STABLE" : detect_versions('C:/Users/%s/AppData/Roaming/Discord/'%username, '/modules/discord_desktop_core/index.js'),
             "CANARY" : detect_versions('C:/Users/%s/AppData/Roaming/Discord Canary/'%username, '/modules/discord_desktop_core/index.js'),
-            "PTB"    : detect_versions('C:/Users/%s/AppData/Roaming/Discord PTB/'%username, '/modules/discord_desktop_core/index.js'),
-            "SNAP"   : detect_versions('/home/%s/snap/discord/82/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
-            "FLATPAK": detect_versions('/home/%s/.var/app/com.discordapp.Discord/config/discord/'%username, '/modules/discord_desktop_core/index.js')
-        }
-    else:
-        baseclients = {
-            "STABLE" : detect_versions('/home/%s/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
-            "CANARY" : detect_versions('/home/%s/.config/discordcanary/'%username, '/modules/discord_desktop_core/index.js'),
-            "PTB"    : detect_versions('/home/%s/.config/discordptb/'%username, '/modules/discord_desktop_core/index.js'),
-            "SNAP"   : detect_versions('/home/%s/snap/discord/current/.config/discord/'%username, '/modules/discord_desktop_core/index.js'),
-            "FLATPAK": detect_versions('/home/%s/.var/app/com.discordapp.Discord/config/discord/'%username, '/modules/discord_desktop_core/index.js')
+            "PTB"    : detect_versions('C:/Users/%s/AppData/Roaming/Discord PTB/'%username, '/modules/discord_desktop_core/index.js')
         }
 
-    clients = [ (str(i+1),cpv) for i,cpv in enumerate( (c,p,v) for c in [ "STABLE", "CANARY", "PTB", "SNAP", "FLATPAK" ] if baseclients[c] for p,v in baseclients[c] ) ]
+    clients = [ (str(i+1),cpv) for i,cpv in enumerate( (c,p,v) for c in baseclients if baseclients[c] for p,v in baseclients[c] ) ]
     clients.append( (str(len(clients)+1), ("CUSTOM",'', '')) )
     getclient = dict(clients).get
 
@@ -81,7 +76,7 @@ if __name__ == "__main__":
         while True:
             print("\nPlease enter the location of your client's index.js file.")
             jspath = input('> ')
-            if os.path.exists(jspath) and os.path.isfile(jspath): return 'CUSTOM', jspath, '' # TODO: can we detect the version of a custom client?
+            if os.path.exists(jspath) and os.path.isfile(jspath): return 'CUSTOM', jspath, ''
             elif not jspath:
                 print("\nOperation cancelled...")
                 return 'CUSTOM', jspath, ''
@@ -119,6 +114,7 @@ if __name__ == "__main__":
 
     client, jspath, version = select_client()
     if jspath:
+        backuppath = "%s.backup"%jspath
         while True:
             print('\nOperating on client: %s %s\n'%(client,version))
             print('Please type the number for your desired option:')
@@ -177,18 +173,18 @@ if __name__ == "__main__":
         
             elif option == 'Uninstall ED':
                 print('Uninstalling EnhancedDiscord...')
-                if os.path.exists("%s.backup"%jspath):
+                if os.path.exists(backuppath):
                     os.remove(jspath)
-                    os.rename("%s.backup"%jspath, jspath)
+                    os.rename(backuppath, jspath)
                     print("Successfully uninstalled EnhancedDiscord!")
                 else:
                     print("Error: Couldn't find index.js backup, did you use the installer to install ED?\n")
         
             elif option == 'Install ED':
-                if os.path.exists("%s.backup"%jspath):
+                if os.path.exists(backuppath):
                     print('Uninstalling EnhancedDiscord...')
                     os.remove(jspath)
-                    os.rename("%s.backup"%jspath, jspath)
+                    os.rename(backuppath, jspath)
                     print("Successfully uninstalled EnhancedDiscord!")
 
                 if not os.path.exists(enhanceddir):
@@ -199,7 +195,6 @@ if __name__ == "__main__":
                     os.rename("%s/EnhancedDiscord-master" % dirpath, "%s/EnhancedDiscord" % dirpath)
                     os.remove("%s/EnhancedDiscord.zip" % dirpath)
                 
-                backuppath = "%s.backup"%jspath
                 if not os.path.exists(backuppath):
                     print("Creating index.js.backup...")
                     with open(jspath,'r') as original:
