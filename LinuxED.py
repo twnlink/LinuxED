@@ -181,19 +181,13 @@ if __name__ == "__main__":
                     print("Error: Couldn't find index.js backup, did you use the installer to install ED?\n")
         
             elif option == 'Install ED':
-                if os.path.exists(backuppath):
-                    print('Uninstalling EnhancedDiscord...')
-                    os.remove(jspath)
-                    os.rename(backuppath, jspath)
-                    print("Successfully uninstalled EnhancedDiscord!")
-
                 if not os.path.exists(enhanceddir):
                     print("Downloading ED...")
-                    urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', '%s/EnhancedDiscord.zip' % dirpath)
-                    with zipfile.ZipFile("%s/EnhancedDiscord.zip" % dirpath,"r") as zip_ref:
-                        zip_ref.extractall(dirpath)
-                    os.rename("%s/EnhancedDiscord-master" % dirpath, "%s/EnhancedDiscord" % dirpath)
-                    os.remove("%s/EnhancedDiscord.zip" % dirpath)
+                    urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', '%s/EnhancedDiscord.zip' % tempdir)
+                    with zipfile.ZipFile("%s/EnhancedDiscord.zip" % tempdir,"r") as zip_ref:
+                        zip_ref.extractall(tempdir)
+                    os.rename("%s/EnhancedDiscord-master" % tempdir, "%s/EnhancedDiscord" % dirpath)
+                    os.remove("%s/EnhancedDiscord.zip" % tempdir)
                 
                 if not os.path.exists(backuppath):
                     print("Creating index.js.backup...")
