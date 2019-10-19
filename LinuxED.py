@@ -159,7 +159,7 @@ if __name__ == "__main__":
                 os.remove("%s/LinuxED-master/LICENSE" % tempdir)
                 os.remove("%s/LinuxED-master/README.md" % tempdir)
                 os.remove("%s/LinuxED-master/.gitignore" % tempdir)
-                os.rename("%s/LinuxED-master/LinuxED.py" % tempdir, "%s/LinuxED-master/%s" % (tempdir, scriptname))
+                shutil.move("%s/LinuxED-master/LinuxED.py" % tempdir, "%s/LinuxED-master/%s" % (tempdir, scriptname))
                 distutils.dir_util.copy_tree('%s/LinuxED-master/' % tempdir, filepath)
                 shutil.rmtree("%s/LinuxED-master" % tempdir)
                 os.remove("%s/LinuxEDUpdate.zip" % tempdir)
@@ -175,7 +175,7 @@ if __name__ == "__main__":
                 print('Uninstalling EnhancedDiscord...')
                 if os.path.exists(backuppath):
                     os.remove(jspath)
-                    os.rename(backuppath, jspath)
+                    shutil.move(backuppath, jspath)
                     print("Successfully uninstalled EnhancedDiscord!")
                 else:
                     print("Error: Couldn't find index.js backup, did you use the installer to install ED?\n")
