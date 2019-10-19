@@ -186,7 +186,7 @@ if __name__ == "__main__":
                     urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', '%s/EnhancedDiscord.zip' % tempdir)
                     with zipfile.ZipFile("%s/EnhancedDiscord.zip" % tempdir,"r") as zip_ref:
                         zip_ref.extractall(tempdir)
-                    os.rename("%s/EnhancedDiscord-master" % tempdir, "%s/EnhancedDiscord" % dirpath)
+                    shutil.move("%s/EnhancedDiscord-master" % tempdir, "%s/EnhancedDiscord" % dirpath)
                     os.remove("%s/EnhancedDiscord.zip" % tempdir)
                 
                 if not os.path.exists(backuppath):
