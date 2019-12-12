@@ -159,6 +159,7 @@ if __name__ == "__main__":
                 os.remove("%s/LinuxED-master/LICENSE" % tempdir)
                 os.remove("%s/LinuxED-master/README.md" % tempdir)
                 os.remove("%s/LinuxED-master/.gitignore" % tempdir)
+                os.remove("%s/LinuxED-master/plugins/style.css" % tempdir)
                 shutil.move("%s/LinuxED-master/LinuxED.py" % tempdir, "%s/LinuxED-master/%s" % (tempdir, scriptname))
                 distutils.dir_util.copy_tree('%s/LinuxED-master/' % tempdir, filepath)
                 shutil.rmtree("%s/LinuxED-master" % tempdir)
