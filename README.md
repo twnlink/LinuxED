@@ -2,7 +2,11 @@
 LinuxED is an alternative installer for EnhancedDiscord that works on Linux. This project is not affiliated with Discord, or EnhancedDiscord in any way. I made this while learning Python and I'm aware of how messy, inconsistent, and poorly coded this script looks.
 # Operating systems supported
 LinuxED supports most major distributions of Linux, MacOS, and even Windows.  
-It also supports all versions of Discord (PTB, Stable, Canary, etc.)
+It also supports all versions of Discord (PTB, Stable, Canary, etc.)  
+
+# MacOS Support
+If you wish to use this on MacOS you'll first need to download Python 3 via [Brew](https://brew.sh).  
+After installing Brew, enter `brew install python3` in a terminal, then follow the installation guide below.
 # Features
 - Custom index.js location
 - EnhancedDiscord updater (this does update ED)
