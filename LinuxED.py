@@ -130,7 +130,7 @@ if __name__ == "__main__":
             module.exports = require('./core.asar');"""%injdir
 
             # room for expansion (other params can be provided here)
-            optionsdict = [('Install ED',),('Uninstall ED',),('Update ED',),('Update LinuxED',),('Select Client',)]
+            optionsdict = [('Install ED',),('Install ED (Beta)',),('Uninstall ED',),('Update ED',),('Update ED (Beta)',),('Update LinuxED',),('Select Client',)]
             if currentdir == False:
                 optionsdict.append(('Use current directory',))
             else:
@@ -204,7 +204,29 @@ if __name__ == "__main__":
                     with open(cfgpath,"w") as cfg: cfg.write("{}")
             
                 print("EnhancedDiscord installation complete!\n")
+            elif option == 'Install ED (Beta)':
+                if not os.path.exists(enhanceddir):
+                    print("Downloading ED...")
+                    urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/beta.zip', '%s/EnhancedDiscord.zip' % tempdir)
+                    with zipfile.ZipFile("%s/EnhancedDiscord.zip" % tempdir,"r") as zip_ref:
+                        zip_ref.extractall(tempdir)
+                    shutil.move("%s/EnhancedDiscord-beta" % tempdir, "%s/EnhancedDiscord" % dirpath)
+                    os.remove("%s/EnhancedDiscord.zip" % tempdir)
+                
+                if not os.path.exists(backuppath):
+                    print("Creating index.js.backup...")
+                    with open(jspath,'r') as original:
+                        with open(backuppath,'w') as backup: backup.write(original.read())
+        
+                print("Patching index.js...")
+                with open(jspath,"w") as idx: idx.write(patch)
 
+                cfgpath = "%s/config.json"%enhanceddir
+                if not os.path.exists(cfgpath):
+                    print("Creating config.json...")
+                    with open(cfgpath,"w") as cfg: cfg.write("{}")
+            
+                print("EnhancedDiscord installation complete!\n")
             elif option == 'Update ED':
                 if os.path.exists(enhanceddir):
                     print("Updating ED...")
@@ -213,6 +235,18 @@ if __name__ == "__main__":
                         zip_ref.extractall(tempdir)
                     distutils.dir_util.copy_tree('%s/EnhancedDiscord-master' % tempdir, '%s/EnhancedDiscord' % dirpath)
                     shutil.rmtree("%s/EnhancedDiscord-master" % tempdir)
+                    os.remove("%s/EDUpdate.zip" % tempdir)
+                    print("Update complete!")
+                else:
+                    print("It seems EnhancedDiscord is not installed in the current directory so it was unable to be updated.")
+            elif option == 'Update ED (Beta)':
+                if os.path.exists(enhanceddir):
+                    print("Updating ED...")
+                    urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/beta.zip', '%s/EDUpdate.zip' % tempdir)
+                    with zipfile.ZipFile("%s/EDUpdate.zip" % tempdir,"r") as zip_ref:
+                        zip_ref.extractall(tempdir)
+                    distutils.dir_util.copy_tree('%s/EnhancedDiscord-beta' % tempdir, '%s/EnhancedDiscord' % dirpath)
+                    shutil.rmtree("%s/EnhancedDiscord-beta" % tempdir)
                     os.remove("%s/EDUpdate.zip" % tempdir)
                     print("Update complete!")
                 else:
