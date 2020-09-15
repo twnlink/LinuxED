@@ -16,6 +16,7 @@ import distutils.core
 import shutil
 import getpass
 import tempfile
+from stat import S_IREAD, S_IRGRP, S_IROTH, S_IWUSR
 
 if __name__ == "__main__":
     """Comment out old Windows notice
