@@ -65,7 +65,7 @@ if __name__ == "__main__":
     elif os.name == 'nt':
         baseclients = {
             "STABLE" : detect_versions('C:/Users/%s/AppData/Roaming/Discord/'%username, '/modules/discord_desktop_core/index.js'),
-            "CANARY" : detect_versions('C:/Users/%s/AppData/Roaming/Discord Canary/'%username, '/modules/discord_desktop_core/index.js'),
+            "CANARY" : detect_versions('C:/Users/%s/AppData/Roaming/discordcanary/'%username, '/modules/discord_desktop_core/index.js'),
             "PTB"    : detect_versions('C:/Users/%s/AppData/Roaming/Discord PTB/'%username, '/modules/discord_desktop_core/index.js')
         }
 
@@ -176,6 +176,7 @@ if __name__ == "__main__":
             elif option == 'Uninstall ED':
                 print('Uninstalling EnhancedDiscord...')
                 if os.path.exists(backuppath):
+                    print("Making sure index.js is no longer read only before removing it...")
                     os.chmod(jspath, S_IWUSR|S_IREAD)
                     os.remove(jspath)
                     shutil.move(backuppath, jspath)
