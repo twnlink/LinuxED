@@ -175,6 +175,7 @@ if __name__ == "__main__":
             elif option == 'Uninstall ED':
                 print('Uninstalling EnhancedDiscord...')
                 if os.path.exists(backuppath):
+                    os.chmod(jspath, S_IWUSR|S_IREAD)
                     os.remove(jspath)
                     shutil.move(backuppath, jspath)
                     print("Successfully uninstalled EnhancedDiscord!")
@@ -197,6 +198,9 @@ if __name__ == "__main__":
         
                 print("Patching index.js...")
                 with open(jspath,"w") as idx: idx.write(patch)
+
+                print("Making index.js read only so Discord can't tamper with it...")
+                os.chmod(jspath, S_IREAD|S_IRGRP|S_IROTH)
 
                 cfgpath = "%s/config.json"%enhanceddir
                 if not os.path.exists(cfgpath):
