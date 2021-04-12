@@ -1,5 +1,9 @@
 # LinuxED
 LinuxED is an alternative installer for EnhancedDiscord that works on Linux. This project is not affiliated with Discord, or EnhancedDiscord in any way. I made this while learning Python and I'm aware of how messy, inconsistent, and poorly coded this script looks.
+
+# LinuxED has been discontinued
+EnhancedDiscord has reached End of Life, thus all remaining official support has been dropped. So LinuxED should be shut down as well.
+
 # Operating systems supported
 LinuxED supports most major distributions of Linux, MacOS, and even Windows.  
 It also supports all versions of Discord (PTB, Stable, Canary, etc.)  
