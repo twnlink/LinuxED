@@ -13,9 +13,9 @@ If you wish to use this on MacOS you'll first need to download Python 3 via [Bre
 After installing Brew, enter `brew install python3` in a terminal, then follow the installation guide below.
 # Features
 - Custom index.js location
-- EnhancedDiscord updater (this does update ED)
-- LinuxED updater (this does not update ED, it updates the LinuxED script)
-- Automates all EnhancedDiscord installation on Linux, MacOS, and Windows.
+- ~~EnhancedDiscord updater (this does update ED)~~
+- ~~LinuxED updater (this does not update ED, it updates the LinuxED script)~~
+- ~~Automates all EnhancedDiscord installation on Linux, MacOS, and Windows.~~
 # Requirements
 You will need Python's distutils, which most commonly has the package name `python3-distutils`  
 To install Python's distutils on Debian or any Debian derivatives (Ubuntu, Linux Mint) do `sudo apt install python3-distutils`
@@ -25,4 +25,4 @@ To install Python's distutils on Debian or any Debian derivatives (Ubuntu, Linux
 2. cd into the newly cloned repo: `cd LinuxED`
 3. Execute the Python script: `python3 LinuxED.py` and follow the instructions.
 4. Restart Discord entirely.
-That's it! EnhancedDiscord is now installed.
+~~That's it! EnhancedDiscord is now installed.~~
