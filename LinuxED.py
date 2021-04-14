@@ -24,9 +24,10 @@ if __name__ == "__main__":
                             'If you are unaware of what you\'re doing, it\'s recommended you close this installer.\n'
                             'Otherwise you may continue at your own risk.\n')"""
 
-    if os.name == 'nt': print('WARNING: it appears you are running LinuxED on Windows.\n'
+    """if os.name == 'nt': print('WARNING: it appears you are running LinuxED on Windows.\n'
                             'LinuxED was not originally made for Windows and Windows compatibility is not maintained.\n'
-                            'Continue at your own risk.')
+                            'Continue at your own risk.')"""
+    print('EnhancedDiscord has now reached end of life as of April 12th, and LinuxED is discontinued as well.  You can still use it however, to remove EnhancedDiscord.')
     # Define the starting variables, these are all their own thing.
     username = getpass.getuser()
     dirpath = os.path.realpath('')
@@ -153,8 +154,8 @@ if __name__ == "__main__":
             
             
             elif option == 'Update LinuxED':
-                print("Updating LinuxED...")
-                urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', '%s/LinuxEDUpdate.zip' % tempdir)
+                print("No updates are available, LinuxED is discontinued.")
+                """urllib.request.urlretrieve('https://github.com/Cr3atable/LinuxED/archive/master.zip', '%s/LinuxEDUpdate.zip' % tempdir)
                 with zipfile.ZipFile("%s/LinuxEDUpdate.zip" % tempdir,"r") as zip_ref:
                     zip_ref.extractall(tempdir)
                 os.remove("%s/LinuxED-master/LICENSE" % tempdir)
@@ -170,7 +171,7 @@ if __name__ == "__main__":
                         os.system("chmod +x %s" % os.path.join(filepath, scriptname))
                     except:
                         print("Couldn't make script executable...\nYou may experience problems when trying to use it again")
-                print("Update complete!\nPlease restart LinuxED for the update to take effect.")
+                print("Update complete!\nPlease restart LinuxED for the update to take effect.")"""
         
         
             elif option == 'Uninstall ED':
@@ -185,7 +186,8 @@ if __name__ == "__main__":
                     print("Error: Couldn't find index.js backup, did you use the installer to install ED?\n")
         
             elif option == 'Install ED':
-                if not os.path.exists(enhanceddir):
+                print("Install option for EnhancedDiscord is disabled, as it's at end of life.")
+                """if not os.path.exists(enhanceddir):
                     print("Downloading ED...")
                     urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', '%s/EnhancedDiscord.zip' % tempdir)
                     with zipfile.ZipFile("%s/EnhancedDiscord.zip" % tempdir,"r") as zip_ref:
@@ -209,10 +211,11 @@ if __name__ == "__main__":
                     print("Creating config.json...")
                     with open(cfgpath,"w") as cfg: cfg.write("{}")
             
-                print("EnhancedDiscord installation complete!\n")
+                print("EnhancedDiscord installation complete!\n")"""
 
             elif option == 'Update ED':
-                if os.path.exists(enhanceddir):
+                print("No updates are available, EnhancedDiscord is at end of life.")
+                """if os.path.exists(enhanceddir):
                     print("Updating ED...")
                     urllib.request.urlretrieve('https://github.com/joe27g/EnhancedDiscord/archive/master.zip', '%s/EDUpdate.zip' % tempdir)
                     with zipfile.ZipFile("%s/EDUpdate.zip" % tempdir,"r") as zip_ref:
@@ -222,7 +225,7 @@ if __name__ == "__main__":
                     os.remove("%s/EDUpdate.zip" % tempdir)
                     print("Update complete!")
                 else:
-                    print("It seems EnhancedDiscord is not installed in the current directory so it was unable to be updated.")
+                    print("It seems EnhancedDiscord is not installed in the current directory so it was unable to be updated.")"""
             elif option == 'Select Client':
                 print("Selecting new Discord client...")
                 backup = (client, jspath, version)
